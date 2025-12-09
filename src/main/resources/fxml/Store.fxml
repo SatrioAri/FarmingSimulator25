@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane prefHeight="1080" prefWidth="1920" styleClass="store-bg" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="com.farmingcmulator.controller.StoreController">
+   <ImageView fitHeight="1080.0" fitWidth="2440.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../images/store.jpg" />
+      </image>
+   </ImageView>
+    
+    <BorderPane>
+        
+        <top>
+            <HBox alignment="CENTER" styleClass="store-header">
+                <padding>
+                    <Insets bottom="20" left="40" right="40" top="20" />
+                </padding>
+                
+                <Button onAction="#onBackClicked" styleClass="back-btn" text="BACK" />
+                
+                <Region HBox.hgrow="ALWAYS" />
+                
+                <Label styleClass="store-title" text="SEED STORE" />
+                
+                <Region HBox.hgrow="ALWAYS" />
+                
+                <Label fx:id="actionsLabel" styleClass="actions-label" text="Actions: 10" />
+            </HBox>
+        </top>
+        
+        <center>
+            <VBox alignment="CENTER" spacing="50">
+                
+                <VBox alignment="CENTER" spacing="8" styleClass="coins-display-box">
+                    <padding>
+                        <Insets bottom="25" left="50" right="50" top="25" />
+                    </padding>
+                    <Label styleClass="coins-title" text="Your Balance" />
+                    <Label fx:id="coinsLabel" styleClass="coins-amount" text="100 coins" />
+                </VBox>
+                
+                <HBox alignment="CENTER" spacing="50">
+                    
+                    <VBox alignment="CENTER" spacing="18" styleClass="box-option">
+                        <padding>
+                            <Insets bottom="35" left="40" right="40" top="35" />
+                        </padding>
+                        <Label styleClass="box-name" text="COMMON BOX" />
+                        <Label styleClass="box-price" text="50 Coins" />
+                        <Label styleClass="box-desc" text="Higher chance for Common crops" />
+                        <Button onAction="#onBuyCommonBox" styleClass="buy-btn-common" text="BUY" />
+                    </VBox>
+                    
+                    <VBox alignment="CENTER" spacing="18" styleClass="box-option">
+                        <padding>
+                            <Insets bottom="35" left="40" right="40" top="35" />
+                        </padding>
+                        <Label styleClass="box-name-rare" text="RARE BOX" />
+                        <Label styleClass="box-price" text="100 Coins" />
+                        <Label styleClass="box-desc" text="Better chance of getting Rare crops" />
+                        <Button onAction="#onBuyRareBox" styleClass="buy-btn-rare" text="BUY" />
+                    </VBox>
+                    
+                    <VBox alignment="CENTER" spacing="18" styleClass="box-option">
+                        <padding>
+                            <Insets bottom="35" left="40" right="40" top="35" />
+                        </padding>
+                        <Label styleClass="box-name-epic" text="EPIC BOX" />
+                        <Label styleClass="box-price" text="200 Coins" />
+                        <Label styleClass="box-desc" text="Best chance for Epic and Legendary" />
+                        <Button onAction="#onBuyEpicBox" styleClass="buy-btn-epic" text="BUY" />
+                    </VBox>
+                    
+                </HBox>
+                
+                <Label styleClass="hint-text" text="Click a box to purchase seeds!" />
+                
+            </VBox>
+        </center>
+        
+    </BorderPane>
+    
+    <!-- Info Popup -->
+    <VBox fx:id="infoPopup" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
+        <VBox maxWidth="400" spacing="15" styleClass="popup-box-small">
+            <padding>
+                <Insets bottom="25" left="35" right="35" top="25" />
+            </padding>
+            
+            <Label fx:id="infoPopupLabel" styleClass="popup-text-small" text="" wrapText="true" />
+            
+            <Button onAction="#onInfoPopupClose" prefWidth="100" styleClass="menu-btn-back" text="OK" />
+        </VBox>
+    </VBox>
+    
+    <!-- Confirmation Popup -->
+    <VBox fx:id="confirmPopup" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
+        <VBox maxWidth="420" spacing="20" styleClass="popup-box-danger">
+            <padding>
+                <Insets bottom="30" left="40" right="40" top="30" />
+            </padding>
+            
+            <Label styleClass="popup-title-danger" text="WARNING" />
+            <Label fx:id="confirmPopupLabel" styleClass="popup-message" text="" wrapText="true" />
+            
+            <HBox alignment="CENTER" spacing="20">
+                <Button onAction="#onConfirmYes" prefWidth="100" styleClass="menu-btn-danger" text="YES" />
+                <Button onAction="#onConfirmNo" prefWidth="100" styleClass="menu-btn-back" text="NO" />
+            </HBox>
+        </VBox>
+    </VBox>
+    
+    <!-- Purchase Result Popup -->
+    <VBox fx:id="purchaseResultPopup" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
+        <VBox maxWidth="420" spacing="25" styleClass="popup-box">
+            <padding>
+                <Insets bottom="45" left="55" right="55" top="45" />
+            </padding>
+            
+            <Label styleClass="popup-title" text="SEED OBTAINED!" />
+            
+            <Label fx:id="purchaseResultLabel" styleClass="purchase-result" text="You got: Wheat" />
+            <Label fx:id="purchaseNewLabel" styleClass="purchase-rarity" text="(Common)" />
+            
+            <Label styleClass="popup-submessage" text="Seed added to your inventory!" />
+            
+            <Button onAction="#onPurchaseResultClose" prefWidth="130" styleClass="menu-btn-primary" text="OK" />
+        </VBox>
+    </VBox>
+    
+</StackPane>

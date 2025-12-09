@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane prefHeight="1080" prefWidth="1920" styleClass="database-bg" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="com.farmingcmulator.controller.DatabaseController">
+   <ImageView fitHeight="1080.0" fitWidth="2440.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../images/mainmenu.jpg" />
+      </image>
+   </ImageView>
+    
+    <VBox fx:id="selectionPane" alignment="CENTER" spacing="40">
+        <Label styleClass="page-title" text="DATABASE" />
+        
+        <VBox alignment="CENTER" maxWidth="400" spacing="25">
+            <Button onAction="#onCropsClicked" prefHeight="70" prefWidth="350" styleClass="menu-btn-secondary" text="CROPS" />
+            <Button onAction="#onHighscoresClicked" prefHeight="70" prefWidth="350" styleClass="menu-btn-secondary" text="HIGHSCORES" />
+            <Button onAction="#onBackToMainMenu" prefHeight="60" prefWidth="350" styleClass="menu-btn-back" text="BACK" />
+        </VBox>
+    </VBox>
+    
+    <VBox fx:id="cropsPane" alignment="CENTER" managed="false" spacing="25" visible="false">
+        <padding>
+            <Insets bottom="40" left="60" right="60" top="40" />
+        </padding>
+        
+        <Label styleClass="page-title" text="CROPS DATABASE" />
+        
+        <HBox alignment="CENTER" spacing="15">
+            <Button onAction="#sortCropsAlphabetical" styleClass="sort-btn" text="A-Z" />
+            <Button onAction="#sortCropsAscending" styleClass="sort-btn" text="Index Asc" />
+            <Button onAction="#sortCropsDescending" styleClass="sort-btn" text="Index Desc" />
+            <Button onAction="#sortCropsObtained" styleClass="sort-btn" text="Obtained" />
+            <Button onAction="#sortCropsNotObtained" styleClass="sort-btn" text="Not Obtained" />
+        </HBox>
+        
+        <TableView fx:id="cropsTable" prefHeight="500" prefWidth="800" styleClass="data-table">
+            <columns>
+                <TableColumn fx:id="cropIndexCol" prefWidth="80" text="No" />
+                <TableColumn fx:id="cropNameCol" prefWidth="250" text="Name" />
+                <TableColumn fx:id="cropRarityCol" prefWidth="180" text="Rarity" />
+                <TableColumn fx:id="cropStatusCol" prefWidth="180" text="Status" />
+            </columns>
+        </TableView>
+        
+        <Button onAction="#onBackFromCrops" prefWidth="250" styleClass="menu-btn-back" text="BACK" />
+    </VBox>
+    
+    <VBox fx:id="highscoresPane" alignment="CENTER" managed="false" spacing="25" visible="false">
+        <padding>
+            <Insets bottom="40" left="60" right="60" top="40" />
+        </padding>
+        
+        <Label styleClass="page-title" text="HIGHSCORES" />
+        
+        <HBox alignment="CENTER" spacing="15">
+            <Button onAction="#sortHighscoresAlphabetical" styleClass="sort-btn" text="A-Z" />
+            <Button onAction="#sortHighscoresAscending" styleClass="sort-btn" text="Score Asc" />
+            <Button onAction="#sortHighscoresDescending" styleClass="sort-btn" text="Score Desc" />
+        </HBox>
+        
+        <TableView fx:id="highscoresTable" prefHeight="500" prefWidth="600" styleClass="data-table">
+            <columns>
+                <TableColumn fx:id="hsNameCol" prefWidth="300" text="Player" />
+                <TableColumn fx:id="hsScoreCol" prefWidth="200" text="Score" />
+            </columns>
+        </TableView>
+        
+        <Button onAction="#onBackFromHighscores" prefWidth="250" styleClass="menu-btn-back" text="BACK" />
+    </VBox>
+    
+</StackPane>

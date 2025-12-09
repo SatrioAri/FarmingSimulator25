@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<StackPane prefHeight="1080" prefWidth="1920" styleClass="field-bg" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="com.farmingcmulator.controller.FieldController">
+   <ImageView fitHeight="1080.0" fitWidth="2440.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../images/field.jpg" />
+      </image>
+   </ImageView>
+    
+    <BorderPane>
+        
+        <top>
+            <HBox alignment="CENTER" styleClass="field-header">
+                <padding>
+                    <Insets bottom="20" left="40" right="40" top="20" />
+                </padding>
+                
+                <Button onAction="#onBackClicked" styleClass="back-btn" text="BACK" />
+                
+                <Region HBox.hgrow="ALWAYS" />
+                
+                <Label styleClass="field-title" text="YOUR FIELD" />
+                
+                <Region HBox.hgrow="ALWAYS" />
+                
+                <Label fx:id="actionsLabel" styleClass="actions-label" text="Actions: 10" />
+            </HBox>
+        </top>
+        
+        <center>
+            <VBox alignment="CENTER" spacing="40">
+                
+                <HBox alignment="CENTER" spacing="25">
+                    
+                    <VBox fx:id="plot1Box" alignment="CENTER" onMouseClicked="#onPlot1Clicked" spacing="10" styleClass="plot-box">
+                        <padding>
+                            <Insets bottom="25" left="30" right="30" top="25" />
+                        </padding>
+                        <Label styleClass="plot-number" text="PLOT 1" />
+                        <Circle fx:id="plot1Circle" radius="30" styleClass="crop-circle" visible="false" />
+                        <Label fx:id="plot1Label" styleClass="plot-crop-name" text="Empty" />
+                        <Label fx:id="plot1Water" styleClass="plot-info" text="" />
+                        <Label fx:id="plot1Days" styleClass="plot-info" text="" />
+                    </VBox>
+                    
+                    <VBox fx:id="plot2Box" alignment="CENTER" onMouseClicked="#onPlot2Clicked" spacing="10" styleClass="plot-box">
+                        <padding>
+                            <Insets bottom="25" left="30" right="30" top="25" />
+                        </padding>
+                        <Label styleClass="plot-number" text="PLOT 2" />
+                        <Circle fx:id="plot2Circle" radius="30" styleClass="crop-circle" visible="false" />
+                        <Label fx:id="plot2Label" styleClass="plot-crop-name" text="Empty" />
+                        <Label fx:id="plot2Water" styleClass="plot-info" text="" />
+                        <Label fx:id="plot2Days" styleClass="plot-info" text="" />
+                    </VBox>
+                    
+                    <VBox fx:id="plot3Box" alignment="CENTER" onMouseClicked="#onPlot3Clicked" spacing="10" styleClass="plot-box">
+                        <padding>
+                            <Insets bottom="25" left="30" right="30" top="25" />
+                        </padding>
+                        <Label styleClass="plot-number" text="PLOT 3" />
+                        <Circle fx:id="plot3Circle" radius="30" styleClass="crop-circle" visible="false" />
+                        <Label fx:id="plot3Label" styleClass="plot-crop-name" text="Empty" />
+                        <Label fx:id="plot3Water" styleClass="plot-info" text="" />
+                        <Label fx:id="plot3Days" styleClass="plot-info" text="" />
+                    </VBox>
+                    
+                    <VBox fx:id="plot4Box" alignment="CENTER" onMouseClicked="#onPlot4Clicked" spacing="10" styleClass="plot-box">
+                        <padding>
+                            <Insets bottom="25" left="30" right="30" top="25" />
+                        </padding>
+                        <Label styleClass="plot-number" text="PLOT 4" />
+                        <Circle fx:id="plot4Circle" radius="30" styleClass="crop-circle" visible="false" />
+                        <Label fx:id="plot4Label" styleClass="plot-crop-name" text="Empty" />
+                        <Label fx:id="plot4Water" styleClass="plot-info" text="" />
+                        <Label fx:id="plot4Days" styleClass="plot-info" text="" />
+                    </VBox>
+                    
+                    <VBox fx:id="plot5Box" alignment="CENTER" onMouseClicked="#onPlot5Clicked" spacing="10" styleClass="plot-box">
+                        <padding>
+                            <Insets bottom="25" left="30" right="30" top="25" />
+                        </padding>
+                        <Label styleClass="plot-number" text="PLOT 5" />
+                        <Circle fx:id="plot5Circle" radius="30" styleClass="crop-circle" visible="false" />
+                        <Label fx:id="plot5Label" styleClass="plot-crop-name" text="Empty" />
+                        <Label fx:id="plot5Water" styleClass="plot-info" text="" />
+                        <Label fx:id="plot5Days" styleClass="plot-info" text="" />
+                    </VBox>
+                    
+                </HBox>
+                
+                <HBox alignment="CENTER" spacing="40">
+                    <Button fx:id="plantButton" onAction="#onPlantClicked" prefHeight="80" prefWidth="200" styleClass="field-action-btn-plant" text="PLANT" />
+                    <Button fx:id="waterButton" onAction="#onWaterClicked" prefHeight="80" prefWidth="200" styleClass="field-action-btn-water" text="WATER" />
+                    <Button fx:id="harvestButton" onAction="#onHarvestClicked" prefHeight="80" prefWidth="200" styleClass="field-action-btn-harvest" text="HARVEST" />
+                </HBox>
+                
+                <Label styleClass="hint-text" text="Select an action, then click on a plot" />
+                
+            </VBox>
+        </center>
+        
+    </BorderPane>
+    
+    <!-- Info Popup (small in-game notification) -->
+    <VBox fx:id="infoPopup" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
+        <VBox maxWidth="400" spacing="15" styleClass="popup-box-small">
+            <padding>
+                <Insets bottom="25" left="35" right="35" top="25" />
+            </padding>
+            
+            <Label fx:id="infoPopupLabel" styleClass="popup-text-small" text="" wrapText="true" />
+            
+            <Button onAction="#onInfoPopupClose" prefWidth="100" styleClass="menu-btn-back" text="OK" />
+        </VBox>
+    </VBox>
+    
+    <!-- Inventory Popup -->
+    <VBox fx:id="inventoryPopup" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
+        <VBox maxWidth="450" spacing="25" styleClass="popup-box">
+            <padding>
+                <Insets bottom="35" left="45" right="45" top="35" />
+            </padding>
+            
+            <Label styleClass="popup-title" text="SELECT CROP" />
+            
+            <ListView fx:id="inventoryListView" prefHeight="300" styleClass="inventory-list" />
+            
+            <HBox alignment="CENTER" spacing="20">
+                <Button onAction="#onCropSelected" prefWidth="140" styleClass="menu-btn-primary" text="Plant" />
+                <Button onAction="#onInventoryCancel" prefWidth="140" styleClass="menu-btn-back" text="Cancel" />
+            </HBox>
+        </VBox>
+    </VBox>
+    
+    <!-- Harvest Result Popup -->
+    <VBox fx:id="harvestResultPopup" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
+        <VBox maxWidth="500" spacing="18" styleClass="popup-box-success">
+            <padding>
+                <Insets bottom="35" left="45" right="45" top="35" />
+            </padding>
+            
+            <Label styleClass="popup-title-success" text="HARVEST RESULT" />
+            
+            <Label fx:id="harvestCropLabel" styleClass="harvest-crop" text="Wheat (Common)" />
+            
+            <VBox alignment="CENTER" spacing="10">
+                <Label styleClass="quality-label" text="Quality" />
+                <ProgressBar fx:id="harvestQualityBar" prefWidth="320" progress="0.5" styleClass="quality-bar" />
+                <HBox alignment="CENTER" spacing="25">
+                    <Label fx:id="harvestQualityLabel" styleClass="quality-percent" text="50%" />
+                    <Label fx:id="harvestGradeLabel" styleClass="quality-grade" text="GOOD" />
+                </HBox>
+            </VBox>
+            
+            <Label fx:id="harvestMessageLabel" styleClass="harvest-message" text="Nice crop!" />
+            
+            <VBox spacing="8" styleClass="price-box">
+                <padding>
+                    <Insets bottom="18" left="25" right="25" top="18" />
+                </padding>
+                <HBox spacing="12">
+                    <Label styleClass="price-label" text="Base Price:" />
+                    <Label fx:id="harvestBaseLabel" styleClass="price-value" text="50 coins" />
+                </HBox>
+                <HBox spacing="12">
+                    <Label styleClass="price-label" text="Quality Bonus:" />
+                    <Label fx:id="harvestBonusLabel" styleClass="price-bonus" text="+25 coins" />
+                </HBox>
+                <HBox spacing="12" styleClass="price-total-row">
+                    <Label styleClass="price-total-label" text="TOTAL:" />
+                    <Label fx:id="harvestTotalLabel" styleClass="price-total-value" text="75 coins" />
+                </HBox>
+            </VBox>
+            
+            <Button onAction="#onHarvestResultClose" prefWidth="160" styleClass="menu-btn-primary" text="Collect" />
+        </VBox>
+    </VBox>
+    
+</StackPane>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane prefHeight="1080" prefWidth="1920" styleClass="main-menu-bg" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.farmingcmulator.controller.MainMenuController">
+   <ImageView fitHeight="1080.0" fitWidth="2440.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../images/mainmenu.jpg" />
+      </image>
+   </ImageView>
+    
+    <VBox alignment="CENTER" spacing="40">
+        
+        <VBox alignment="CENTER" spacing="15" styleClass="title-box">
+            <padding>
+                <Insets bottom="30" left="50" right="50" top="30" />
+            </padding>
+            <Label styleClass="game-title" text="FARMING C-MULATOR" />
+            <Label styleClass="game-subtitle" text="A Farming Simulation Game" />
+        </VBox>
+        
+        <VBox alignment="CENTER" maxWidth="400" spacing="25">
+            <Button onAction="#onPlayClicked" prefHeight="70" prefWidth="350" styleClass="menu-btn-primary" text="PLAY" />
+            <Button onAction="#onDatabaseClicked" prefHeight="70" prefWidth="350" styleClass="menu-btn-secondary" text="DATABASE" />
+            <Button onAction="#onExitClicked" prefHeight="70" prefWidth="350" styleClass="menu-btn-danger" text="EXIT" />
+        </VBox>
+        
+        <Label styleClass="footer-text" text="Version 2.0 - JavaFX Edition" />
+        
+    </VBox>
+    
+</StackPane>

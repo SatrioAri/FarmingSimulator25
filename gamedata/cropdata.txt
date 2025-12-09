@@ -1,0 +1,48 @@
+1,Wheat,Common,Not
+2,Corn,Common,Not
+3,Carrot,Common,Not
+4,Potato,Common,Not
+5,Tomato,Common,Not
+6,Lettuce,Common,Not
+7,Onion,Common,Not
+8,Cabbage,Common,Not
+9,Radish,Common,Not
+10,Spinach,Common,Not
+11,Cucumber,Common,Not
+12,Peas,Common,Not
+13,Beans,Common,Not
+14,Garlic,Common,Not
+15,Celery,Common,Not
+16,Turnip,Common,Not
+17,Beet,Common,Not
+18,Pumpkin,Uncommon,Not
+19,Melon,Uncommon,Not
+20,Strawberry,Uncommon,Not
+21,Blueberry,Uncommon,Not
+22,Grape,Uncommon,Not
+23,Apple,Uncommon,Not
+24,Orange,Uncommon,Not
+25,Peach,Uncommon,Not
+26,Cherry,Uncommon,Not
+27,Pear,Uncommon,Not
+28,Plum,Uncommon,Not
+29,Lemon,Uncommon,Not
+30,Eggplant,Rare,Not
+31,Pepper,Rare,Not
+32,Artichoke,Rare,Not
+33,Asparagus,Rare,Not
+34,Broccoli,Rare,Not
+35,Cauliflower,Rare,Not
+36,Zucchini,Rare,Not
+37,Avocado,Rare,Not
+38,Mango,Rare,Not
+39,Papaya,Rare,Not
+40,Pineapple,Rare,Not
+41,Dragon Fruit,Epic,Not
+42,Starfruit,Epic,Not
+43,Passion Fruit,Epic,Not
+44,Durian,Epic,Not
+45,Jackfruit,Epic,Not
+46,Rambutan,Epic,Not
+47,Golden Apple,Legendary,Not
+48,Crystal Melon,Legendary,Not

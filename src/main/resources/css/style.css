@@ -1,0 +1,774 @@
+/* ===============================================
+   FARMING C-MULATOR - JavaFX Stylesheet
+   Frame-by-Frame GUI Design - Updated
+   Resolution: 1920 x 1080
+   =============================================== */
+
+/* ==================== BACKGROUNDS WITH IMAGES ==================== */
+
+.main-menu-bg {
+    -fx-background-image: url("/images/mainmenu.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.database-bg {
+    -fx-background-color: linear-gradient(to bottom, #2c3e50, #34495e);
+}
+
+.enter-name-bg {
+    -fx-background-image: url("/images/mainmenu.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.game-menu-bg {
+    -fx-background-image: url("/images/gamemenu.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.field-bg {
+    -fx-background-image: url("/images/field.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+.store-bg {
+    -fx-background-image: url("/images/store.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+}
+
+/* ==================== TYPOGRAPHY ==================== */
+
+.game-title {
+    -fx-font-size: 72px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 15, 0, 4, 4);
+}
+
+.game-subtitle {
+    -fx-font-size: 28px;
+    -fx-text-fill: rgba(255,255,255,0.95);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 1, 1);
+}
+
+.page-title {
+    -fx-font-size: 56px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0, 3, 3);
+}
+
+.footer-text {
+    -fx-font-size: 18px;
+    -fx-text-fill: rgba(255,255,255,0.7);
+}
+
+/* ==================== TITLE BOX ==================== */
+
+.title-box {
+    -fx-background-color: rgba(0,0,0,0.5);
+    -fx-background-radius: 25px;
+}
+
+/* ==================== MENU BUTTONS ==================== */
+
+.menu-btn-primary {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #27ae60, #1e8449);
+    -fx-background-radius: 18px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 4);
+}
+
+.menu-btn-primary:hover {
+    -fx-background-color: linear-gradient(to bottom, #2ecc71, #27ae60);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 15, 0, 0, 5);
+}
+
+.menu-btn-secondary {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #3498db, #2980b9);
+    -fx-background-radius: 18px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 4);
+}
+
+.menu-btn-secondary:hover {
+    -fx-background-color: linear-gradient(to bottom, #5dade2, #3498db);
+}
+
+.menu-btn-danger {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #e74c3c, #c0392b);
+    -fx-background-radius: 18px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 4);
+}
+
+.menu-btn-danger:hover {
+    -fx-background-color: linear-gradient(to bottom, #ec7063, #e74c3c);
+}
+
+.menu-btn-back {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #7f8c8d, #616a6b);
+    -fx-background-radius: 15px;
+    -fx-cursor: hand;
+}
+
+.menu-btn-back:hover {
+    -fx-background-color: linear-gradient(to bottom, #95a5a6, #7f8c8d);
+}
+
+/* ==================== SORT BUTTONS ==================== */
+
+.sort-btn {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-background-color: #ecf0f1;
+    -fx-background-radius: 10px;
+    -fx-padding: 12px 20px;
+    -fx-cursor: hand;
+}
+
+.sort-btn:hover {
+    -fx-background-color: #bdc3c7;
+}
+
+/* ==================== DATA TABLE ==================== */
+
+.data-table {
+    -fx-background-color: white;
+    -fx-background-radius: 12px;
+}
+
+.data-table .column-header {
+    -fx-background-color: #34495e;
+}
+
+.data-table .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.data-table .table-row-cell {
+    -fx-background-color: white;
+    -fx-font-size: 14px;
+}
+
+.data-table .table-row-cell:odd {
+    -fx-background-color: #f8f9fa;
+}
+
+.data-table .table-row-cell:selected {
+    -fx-background-color: #3498db;
+}
+
+/* ==================== FORM ELEMENTS ==================== */
+
+.form-box {
+    -fx-background-color: rgba(255,255,255,0.95);
+    -fx-background-radius: 25px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 20, 0, 0, 8);
+}
+
+.form-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.name-input {
+    -fx-font-size: 22px;
+    -fx-padding: 15px 20px;
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 2px;
+}
+
+.name-input:focused {
+    -fx-border-color: #3498db;
+}
+
+.error-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #e74c3c;
+    -fx-font-weight: bold;
+}
+
+/* ==================== STATUS BAR ==================== */
+
+.status-bar {
+    -fx-background-color: rgba(255,255,255,0.95);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 0, 4);
+}
+
+.status-icon {
+    -fx-font-size: 28px;
+}
+
+.status-value {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.status-text {
+    -fx-font-size: 18px;
+    -fx-text-fill: #7f8c8d;
+}
+
+/* ==================== GAME MENU ==================== */
+
+.menu-question {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 8, 0, 2, 2);
+}
+
+.action-btn-field {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #27ae60, #1e8449);
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 12, 0, 0, 5);
+}
+
+.action-btn-field:hover {
+    -fx-background-color: linear-gradient(to bottom, #2ecc71, #27ae60);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 18, 0, 0, 7);
+}
+
+.action-btn-store {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #e67e22, #d35400);
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 12, 0, 0, 5);
+}
+
+.action-btn-store:hover {
+    -fx-background-color: linear-gradient(to bottom, #f39c12, #e67e22);
+}
+
+.action-btn-skip {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #3498db, #2980b9);
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 12, 0, 0, 5);
+}
+
+.action-btn-skip:hover {
+    -fx-background-color: linear-gradient(to bottom, #5dade2, #3498db);
+}
+
+.action-btn-retire {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #e74c3c, #c0392b);
+    -fx-background-radius: 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 12, 0, 0, 5);
+}
+
+.action-btn-retire:hover {
+    -fx-background-color: linear-gradient(to bottom, #ec7063, #e74c3c);
+}
+
+/* ==================== FIELD SCREEN ==================== */
+
+.field-header, .store-header {
+    -fx-background-color: rgba(255,255,255,0.95);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 3);
+}
+
+.field-title, .store-title {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.back-btn {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #7f8c8d;
+    -fx-background-radius: 10px;
+    -fx-padding: 12px 25px;
+    -fx-cursor: hand;
+}
+
+.back-btn:hover {
+    -fx-background-color: #95a5a6;
+}
+
+.actions-label {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.hint-text {
+    -fx-font-size: 20px;
+    -fx-text-fill: rgba(255,255,255,0.9);
+    -fx-font-style: italic;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 3, 0, 1, 1);
+}
+
+/* ==================== PLOT BOX ==================== */
+
+.plot-box {
+    -fx-background-color: rgba(255,255,255,0.92);
+    -fx-background-radius: 18px;
+    -fx-min-width: 180px;
+    -fx-min-height: 240px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 4);
+}
+
+.plot-box:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 15, 0, 0, 6);
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+.plot-number {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7f8c8d;
+}
+
+.plot-crop-name {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.plot-info {
+    -fx-font-size: 16px;
+    -fx-text-fill: #2c3e50;
+}
+
+.crop-circle {
+    -fx-stroke: white;
+    -fx-stroke-width: 3;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 6, 0, 0, 2);
+}
+
+/* ==================== FIELD ACTION BUTTONS ==================== */
+
+.field-action-btn-plant {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #27ae60, #1e8449);
+    -fx-background-radius: 15px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
+}
+
+.field-action-btn-plant:hover {
+    -fx-background-color: linear-gradient(to bottom, #2ecc71, #27ae60);
+}
+
+/* Active state for plant button */
+.field-action-btn-plant-active {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #145a32, #0e3d22);
+    -fx-background-radius: 15px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 2), innershadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);
+    -fx-border-color: #f1c40f;
+    -fx-border-width: 3px;
+    -fx-border-radius: 15px;
+}
+
+.field-action-btn-water {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #3498db, #2980b9);
+    -fx-background-radius: 15px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
+}
+
+.field-action-btn-water:hover {
+    -fx-background-color: linear-gradient(to bottom, #5dade2, #3498db);
+}
+
+/* Active state for water button */
+.field-action-btn-water-active {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #1a5276, #0e2f44);
+    -fx-background-radius: 15px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 2), innershadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);
+    -fx-border-color: #f1c40f;
+    -fx-border-width: 3px;
+    -fx-border-radius: 15px;
+}
+
+.field-action-btn-harvest {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #f39c12, #d68910);
+    -fx-background-radius: 15px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
+}
+
+.field-action-btn-harvest:hover {
+    -fx-background-color: linear-gradient(to bottom, #f5b041, #f39c12);
+}
+
+/* Active state for harvest button */
+.field-action-btn-harvest-active {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #9a6006, #6e4504);
+    -fx-background-radius: 15px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 2), innershadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2);
+    -fx-border-color: #f1c40f;
+    -fx-border-width: 3px;
+    -fx-border-radius: 15px;
+}
+
+/* ==================== STORE SCREEN ==================== */
+
+.coins-display-box {
+    -fx-background-color: rgba(255,255,255,0.95);
+    -fx-background-radius: 18px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 0, 4);
+}
+
+.coins-title {
+    -fx-font-size: 20px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.coins-amount {
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #27ae60;
+}
+
+.box-option {
+    -fx-background-color: rgba(255,255,255,0.95);
+    -fx-background-radius: 25px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0, 0, 5);
+}
+
+.box-option:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 18, 0, 0, 8);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.box-icon {
+    -fx-font-size: 60px;
+}
+
+.box-name {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7f8c8d;
+}
+
+.box-name-rare {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #27ae60;
+}
+
+.box-name-epic {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #9b59b6;
+}
+
+.box-price {
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.box-desc {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7f8c8d;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+    -fx-max-width: 180px;
+}
+
+.buy-btn-common {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #7f8c8d;
+    -fx-background-radius: 10px;
+    -fx-padding: 12px 40px;
+    -fx-cursor: hand;
+}
+
+.buy-btn-rare {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #27ae60;
+    -fx-background-radius: 10px;
+    -fx-padding: 12px 40px;
+    -fx-cursor: hand;
+}
+
+.buy-btn-epic {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: #9b59b6;
+    -fx-background-radius: 10px;
+    -fx-padding: 12px 40px;
+    -fx-cursor: hand;
+}
+
+/* ==================== OVERLAYS & POPUPS ==================== */
+
+.overlay-bg {
+    -fx-background-color: rgba(0,0,0,0.7);
+}
+
+.popup-box {
+    -fx-background-color: white;
+    -fx-background-radius: 25px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 25, 0, 0, 8);
+}
+
+.popup-box-success {
+    -fx-background-color: #f0fff4;
+    -fx-background-radius: 25px;
+    -fx-border-color: #27ae60;
+    -fx-border-width: 4px;
+    -fx-border-radius: 25px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 25, 0, 0, 8);
+}
+
+.popup-box-danger {
+    -fx-background-color: #fff5f5;
+    -fx-background-radius: 25px;
+    -fx-border-color: #e74c3c;
+    -fx-border-width: 4px;
+    -fx-border-radius: 25px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 25, 0, 0, 8);
+}
+
+/* Small info popup */
+.popup-box-small {
+    -fx-background-color: rgba(44, 62, 80, 0.95);
+    -fx-background-radius: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 15, 0, 0, 5);
+}
+
+.popup-title {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.popup-title-success {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #27ae60;
+}
+
+.popup-title-danger {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e74c3c;
+}
+
+.popup-message {
+    -fx-font-size: 20px;
+    -fx-text-fill: #2c3e50;
+}
+
+.popup-submessage {
+    -fx-font-size: 16px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.popup-label {
+    -fx-font-size: 22px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.popup-score {
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #27ae60;
+}
+
+/* Small popup text */
+.popup-text-small {
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* ==================== HARVEST RESULT ==================== */
+
+.harvest-crop {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.quality-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.quality-bar {
+    -fx-accent: #f39c12;
+}
+
+.quality-bar .track {
+    -fx-background-color: #ecf0f1;
+    -fx-background-radius: 12px;
+    -fx-pref-height: 24px;
+}
+
+.quality-bar .bar {
+    -fx-background-color: linear-gradient(to right, #e74c3c, #f39c12, #27ae60);
+    -fx-background-radius: 12px;
+}
+
+.quality-percent {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.quality-grade {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.harvest-message {
+    -fx-font-size: 16px;
+    -fx-font-style: italic;
+    -fx-text-fill: #7f8c8d;
+}
+
+.price-box {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 12px;
+}
+
+.price-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.price-value {
+    -fx-font-size: 16px;
+    -fx-text-fill: #2c3e50;
+}
+
+.price-bonus {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #27ae60;
+}
+
+.price-total-row {
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1px 0 0 0;
+    -fx-padding: 12px 0 0 0;
+}
+
+.price-total-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.price-total-value {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #27ae60;
+}
+
+/* ==================== PURCHASE RESULT ==================== */
+
+.purchase-result {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+.purchase-rarity {
+    -fx-font-size: 20px;
+    -fx-text-fill: #7f8c8d;
+}
+
+/* ==================== INVENTORY LIST ==================== */
+
+.inventory-list {
+    -fx-background-color: white;
+    -fx-background-radius: 12px;
+}
+
+.inventory-list .list-cell {
+    -fx-font-size: 16px;
+    -fx-padding: 12px;
+}
+
+.inventory-list .list-cell:odd {
+    -fx-background-color: #f8f9fa;
+}
+
+.inventory-list .list-cell:selected {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+}
+
+/* ==================== RARITY COLORS ==================== */
+
+.rarity-common { -fx-text-fill: #95a5a6; }
+.rarity-uncommon { -fx-text-fill: #27ae60; }
+.rarity-rare { -fx-text-fill: #3498db; }
+.rarity-epic { -fx-text-fill: #9b59b6; }
+.rarity-legendary { -fx-text-fill: #f39c12; }
