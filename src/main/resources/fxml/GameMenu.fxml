@@ -1,76 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 
-<StackPane prefHeight="1080" prefWidth="1920" styleClass="game-menu-bg" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="com.farmingcmulator.controller.GameMenuController">
-   <ImageView fitHeight="1080.0" fitWidth="2440.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../images/gamemenu.jpg" />
-      </image>
-   </ImageView>
+<StackPane xmlns:fx="http://javafx.com/fxml/1" 
+           fx:controller="com.farmingcmulator.controller.GameMenuController"
+           styleClass="game-menu-bg"
+           prefWidth="1920" prefHeight="1080">
+    <ImageView fitHeight="1080.0" fitWidth="2440.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../images/gamemenu.jpg" />
+        </image>
+    </ImageView>
     
     <BorderPane>
         
+        <!-- STATUS BAR - TOP -->
         <top>
-            <HBox alignment="CENTER_LEFT" spacing="50" styleClass="status-bar">
-                <padding>
-                    <Insets bottom="20" left="40" right="40" top="20" />
-                </padding>
-                
-                <HBox alignment="CENTER" spacing="10">
-                    <Label styleClass="status-text" text="Player:" />
-                    <Label fx:id="playerNameLabel" styleClass="status-value" text="Player" />
+            <VBox>
+                <HBox styleClass="status-bar" alignment="CENTER">
+                    <padding>
+                        <Insets top="18" right="40" bottom="18" left="40"/>
+                    </padding>
+                    
+                    <!-- Player Info -->
+                    <VBox alignment="CENTER" spacing="3" styleClass="status-box">
+                        <Label text="FARMER" styleClass="status-text"/>
+                        <Label fx:id="playerNameLabel" text="Player" styleClass="status-value"/>
+                    </VBox>
+                    
+                    <Region prefWidth="25"/>
+                    
+                    <!-- Days -->
+                    <VBox alignment="CENTER" spacing="3" styleClass="status-box">
+                        <Label text="DAYS LEFT" styleClass="status-text"/>
+                        <Label fx:id="daysRemainingLabel" text="90" styleClass="status-value"/>
+                    </VBox>
+                    
+                    <Region prefWidth="25"/>
+                    
+                    <!-- Coins -->
+                    <VBox alignment="CENTER" spacing="3" styleClass="status-box">
+                        <Label text="COINS" styleClass="status-text"/>
+                        <Label fx:id="coinsLabel" text="100" styleClass="status-value"/>
+                    </VBox>
+                    
+                    <Region prefWidth="25"/>
+                    
+                    <!-- Actions -->
+                    <VBox alignment="CENTER" spacing="3" styleClass="status-box">
+                        <Label text="ACTIONS" styleClass="status-text"/>
+                        <Label fx:id="actionsRemainingLabel" text="10" styleClass="status-value"/>
+                    </VBox>
+                    
                 </HBox>
-                
-                <HBox alignment="CENTER" spacing="10">
-                    <Label styleClass="status-text" text="Days:" />
-                    <Label fx:id="daysRemainingLabel" styleClass="status-value" text="90" />
-                </HBox>
-                
-                <HBox alignment="CENTER" spacing="10">
-                    <Label styleClass="status-text" text="Coins:" />
-                    <Label fx:id="coinsLabel" styleClass="status-value" text="100" />
-                </HBox>
-                
-                <HBox alignment="CENTER" spacing="10">
-                    <Label styleClass="status-text" text="Actions:" />
-                    <Label fx:id="actionsRemainingLabel" styleClass="status-value" text="10" />
-                </HBox>
-            </HBox>
+            </VBox>
         </top>
         
+        <!-- MAIN CONTENT - CENTER -->
         <center>
-            <VBox alignment="CENTER" spacing="40">
+            <VBox alignment="CENTER" spacing="35">
+                <padding>
+                    <Insets top="40" right="60" bottom="40" left="60"/>
+                </padding>
                 
-                <Label styleClass="menu-question" text="What would you like to do?" />
+                <!-- Question -->
+                <Label text="What would you like to do?" styleClass="menu-question"/>
                 
-                <GridPane alignment="CENTER" hgap="40" vgap="40">
-                    <Button onAction="#onFieldClicked" prefHeight="140" prefWidth="280" styleClass="action-btn-field" text="FIELD" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Region prefHeight="10"/>
+                
+                <!-- Action Buttons Grid -->
+                <GridPane hgap="30" vgap="25" alignment="CENTER">
                     
-                    <Button onAction="#onStoreClicked" prefHeight="140" prefWidth="280" styleClass="action-btn-store" text="STORE" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <!-- FIELD Button -->
+                    <VBox alignment="CENTER" spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Button text="FIELD" onAction="#onFieldClicked" 
+                                styleClass="action-btn-field" prefWidth="260" prefHeight="100"/>
+                        <Label text="Manage your crops" style="-fx-font-size: 13px; -fx-text-fill: #FFFFFF; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 3, 0.5, 0, 1);"/>
+                    </VBox>
                     
-                    <Button onAction="#onSkipDayClicked" prefHeight="140" prefWidth="280" styleClass="action-btn-skip" text="SKIP DAY" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <!-- STORE Button -->
+                    <VBox alignment="CENTER" spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Button text="STORE" onAction="#onStoreClicked" 
+                                styleClass="action-btn-store" prefWidth="260" prefHeight="100"/>
+                        <Label text="Buy seed boxes" style="-fx-font-size: 13px; -fx-text-fill: #FFFFFF; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 3, 0.5, 0, 1);"/>
+                    </VBox>
                     
-                    <Button onAction="#onRetireClicked" prefHeight="140" prefWidth="280" styleClass="action-btn-retire" text="RETIRE" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-               <columnConstraints>
-                  <ColumnConstraints />
-                  <ColumnConstraints />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
+                    <!-- SKIP DAY Button -->
+                    <VBox alignment="CENTER" spacing="6" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Button text="SKIP DAY" onAction="#onSkipDayClicked" 
+                                styleClass="action-btn-skip" prefWidth="260" prefHeight="100"/>
+                        <Label text="Rest until tomorrow" style="-fx-font-size: 13px; -fx-text-fill: #FFFFFF; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 3, 0.5, 0, 1);"/>
+                    </VBox>
+                    
+                    <!-- RETIRE Button -->
+                    <VBox alignment="CENTER" spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Button text="RETIRE" onAction="#onRetireClicked" 
+                                styleClass="action-btn-retire" prefWidth="260" prefHeight="100"/>
+                        <Label text="End your season" style="-fx-font-size: 13px; -fx-text-fill: #FFFFFF; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 3, 0.5, 0, 1);"/>
+                    </VBox>
+                    
                 </GridPane>
                 
             </VBox>
@@ -78,70 +116,81 @@
         
     </BorderPane>
     
-    <VBox fx:id="infoPopup" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
-        <VBox maxWidth="400" spacing="15" styleClass="popup-box-small">
+    <!-- INFO POPUP -->
+    <VBox fx:id="infoPopup" styleClass="overlay-bg" alignment="CENTER" visible="false" managed="false">
+        <VBox styleClass="popup-box-small" spacing="18" maxWidth="400" minWidth="350">
             <padding>
-                <Insets bottom="25" left="35" right="35" top="25" />
+                <Insets top="28" right="35" bottom="28" left="35"/>
             </padding>
-            <Label fx:id="infoPopupLabel" styleClass="popup-text-small" text="" wrapText="true" />
-            <Button onAction="#onInfoPopupClose" prefWidth="100" styleClass="menu-btn-back" text="OK" />
+            <Label fx:id="infoPopupLabel" text="" styleClass="popup-text-small" wrapText="true"/>
+            <Button text="OK" onAction="#onInfoPopupClose" styleClass="menu-btn-primary" prefWidth="100"/>
         </VBox>
     </VBox>
     
-    <VBox fx:id="skipDayConfirmPane" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
-        <VBox maxWidth="420" spacing="20" styleClass="popup-box">
+    <!-- SKIP DAY CONFIRM -->
+    <VBox fx:id="skipDayConfirmPane" styleClass="overlay-bg" alignment="CENTER" visible="false" managed="false">
+        <VBox styleClass="popup-box" spacing="20" maxWidth="450" minWidth="400">
             <padding>
-                <Insets bottom="35" left="45" right="45" top="35" />
+                <Insets top="30" right="40" bottom="30" left="40"/>
             </padding>
-            <Label styleClass="popup-title" text="SKIP DAY" />
-            <Label styleClass="popup-message" text="Skip to the next day?" />
-            <Label styleClass="popup-submessage" text="Crops will grow and may need more water." />
-            <HBox alignment="CENTER" spacing="20">
-                <Button onAction="#onSkipDayConfirm" prefWidth="100" styleClass="menu-btn-primary" text="YES" />
-                <Button onAction="#onSkipDayCancel" prefWidth="100" styleClass="menu-btn-back" text="NO" />
+            <Label text="SKIP DAY" styleClass="popup-title"/>
+            <Label text="Ready to rest for the night?" styleClass="popup-message"/>
+            <Label text="Crops will grow and may need more water tomorrow." styleClass="popup-submessage" wrapText="true"/>
+            <Region prefHeight="8"/>
+            <HBox spacing="20" alignment="CENTER">
+                <Button text="YES, SKIP" onAction="#onSkipDayConfirm" styleClass="menu-btn-primary" prefWidth="120" prefHeight="45"/>
+                <Button text="CANCEL" onAction="#onSkipDayCancel" styleClass="menu-btn-back" prefWidth="120" prefHeight="45"/>
             </HBox>
         </VBox>
     </VBox>
     
-    <VBox fx:id="retireConfirmPane" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
-        <VBox maxWidth="420" spacing="20" styleClass="popup-box">
+    <!-- RETIRE CONFIRM -->
+    <VBox fx:id="retireConfirmPane" styleClass="overlay-bg" alignment="CENTER" visible="false" managed="false">
+        <VBox styleClass="popup-box" spacing="20" maxWidth="480" minWidth="420">
             <padding>
-                <Insets bottom="35" left="45" right="45" top="35" />
+                <Insets top="30" right="40" bottom="30" left="40"/>
             </padding>
-            <Label styleClass="popup-title" text="RETIRE" />
-            <Label styleClass="popup-message" text="Are you sure you want to retire?" />
-            <Label styleClass="popup-submessage" text="Your score will be saved if above 0." />
-            <HBox alignment="CENTER" spacing="20">
-                <Button onAction="#onRetireConfirm" prefWidth="100" styleClass="menu-btn-danger" text="YES" />
-                <Button onAction="#onRetireCancel" prefWidth="100" styleClass="menu-btn-back" text="NO" />
+            <Label text="RETIRE" styleClass="popup-title"/>
+            <Label text="Ready to end your farming season?" styleClass="popup-message"/>
+            <Label text="Your score will be saved if you have positive coins." styleClass="popup-submessage" wrapText="true"/>
+            <Region prefHeight="8"/>
+            <HBox spacing="20" alignment="CENTER">
+                <Button text="YES, RETIRE" onAction="#onRetireConfirm" styleClass="menu-btn-danger" prefWidth="130" prefHeight="45"/>
+                <Button text="CANCEL" onAction="#onRetireCancel" styleClass="menu-btn-back" prefWidth="130" prefHeight="45"/>
             </HBox>
         </VBox>
     </VBox>
     
-    <VBox fx:id="gameOverPane" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
-        <VBox maxWidth="450" spacing="25" styleClass="popup-box-danger">
+    <!-- GAME OVER -->
+    <VBox fx:id="gameOverPane" styleClass="overlay-bg" alignment="CENTER" visible="false" managed="false">
+        <VBox styleClass="popup-box-danger" spacing="20" maxWidth="480" minWidth="420">
             <padding>
-                <Insets bottom="45" left="55" right="55" top="45" />
+                <Insets top="35" right="45" bottom="35" left="45"/>
             </padding>
-            <Label styleClass="popup-title-danger" text="GAME OVER" />
-            <Label styleClass="popup-message" text="You went bankrupt!" />
-            <Label styleClass="popup-submessage" text="Better luck next time, farmer!" />
-            <Button onAction="#onReturnToMenu" prefWidth="220" styleClass="menu-btn-back" text="Return to Menu" />
+            <Label text="GAME OVER" styleClass="popup-title-danger"/>
+            <Label text="You went bankrupt!" styleClass="popup-message"/>
+            <Label text="Better luck on your next farm!" styleClass="popup-submessage"/>
+            <Region prefHeight="10"/>
+            <Button text="Return to Menu" onAction="#onReturnToMenu" styleClass="menu-btn-back" prefWidth="200" prefHeight="45"/>
         </VBox>
     </VBox>
     
-    <VBox fx:id="seasonOverPane" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
-        <VBox maxWidth="500" spacing="25" styleClass="popup-box-success">
+    <!-- SEASON COMPLETE -->
+    <VBox fx:id="seasonOverPane" styleClass="overlay-bg" alignment="CENTER" visible="false" managed="false">
+        <VBox styleClass="popup-box-success" spacing="20" maxWidth="500" minWidth="440">
             <padding>
-                <Insets bottom="45" left="55" right="55" top="45" />
+                <Insets top="35" right="45" bottom="35" left="45"/>
             </padding>
-            <Label styleClass="popup-title-success" text="SEASON COMPLETE!" />
-            <Label styleClass="popup-message" text="Congratulations! Your farming season has ended." />
-            <HBox alignment="CENTER" spacing="15">
-                <Label styleClass="popup-label" text="Final Score:" />
-                <Label fx:id="finalScoreLabel" styleClass="popup-score" text="0 coins" />
-            </HBox>
-            <Button onAction="#onReturnToMenu" prefWidth="220" styleClass="menu-btn-primary" text="Return to Menu" />
+            <Label text="SEASON COMPLETE!" styleClass="popup-title-success"/>
+            <Label text="Congratulations, farmer!" styleClass="popup-message"/>
+            <Label text="You've completed your farming season." styleClass="popup-submessage"/>
+            <Region prefHeight="8"/>
+            <VBox alignment="CENTER" spacing="6" style="-fx-background-color: rgba(255,255,255,0.5); -fx-background-radius: 12; -fx-padding: 15;">
+                <Label text="FINAL SCORE" styleClass="popup-label"/>
+                <Label fx:id="finalScoreLabel" text="0 coins" styleClass="popup-score"/>
+            </VBox>
+            <Region prefHeight="8"/>
+            <Button text="Return to Menu" onAction="#onReturnToMenu" styleClass="menu-btn-primary" prefWidth="200" prefHeight="45"/>
         </VBox>
     </VBox>
     
