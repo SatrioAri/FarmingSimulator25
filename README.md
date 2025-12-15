@@ -11,7 +11,7 @@
 
 *Plant seeds, water crops, harvest for profit, and become the ultimate farmer!*
 
-[Features](#-features) • [How to Play](#-how-to-play) • [Project Structure](#-project-structure)
+[Features](#-features) • [Installation](#-installation) • [How to Play](#-how-to-play) • [Project Structure](#-project-structure)
 
 </div>
 
