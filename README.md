@@ -11,7 +11,7 @@
 
 *Plant seeds, water crops, harvest for profit, and become the ultimate farmer!*
 
-[Features](#-features) • [Installation](#-installation) • [How to Play](#-how-to-play) • [Project Structure](#-project-structure)
+[Features](#-features) • [How to Play](#-how-to-play) • [Project Structure](#-project-structure)
 
 </div>
 
@@ -21,7 +21,7 @@
 
 **Farming Simulator** is a casual farming simulation game where players manage a small farm over a 90-day season. Buy seed boxes from the store, plant crops in your fields, water them daily, and harvest when ready to earn coins. The game features a gacha-style seed box system with varying rarities, quality-based harvest bonuses, and a highscore system to track your farming achievements.
 
-This project was developed as a JavaFX GUI application, demonstrating object-oriented programming principles, MVC architecture, and modern UI/UX design.
+This project was developed as a JavaFX GUI application, demonstrating object-oriented programming principles, MVC architecture, and cool design.
 
 ---
 
@@ -59,7 +59,7 @@ This project was developed as a JavaFX GUI application, demonstrating object-ori
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/farming-cmulator.git
+   git clone https://github.com/satrioari/farmingsimulator25.git
    cd farming-cmulator
    ```
 
