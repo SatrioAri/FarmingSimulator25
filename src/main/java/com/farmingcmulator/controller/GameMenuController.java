@@ -2,6 +2,7 @@ package com.farmingcmulator.controller;
 
 import com.farmingcmulator.GameState;
 import com.farmingcmulator.SceneManager;
+import com.farmingcmulator.util.SoundManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -27,6 +28,7 @@ public class GameMenuController implements Initializable {
     @FXML private Label infoPopupLabel;
     
     private GameState gameState;
+    private SoundManager sound = SoundManager.getInstance();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -77,6 +79,7 @@ public class GameMenuController implements Initializable {
     
     private void showInfoPopup(String message) {
         if (infoPopupLabel != null && infoPopup != null) {
+            sound.playPopup();
             infoPopupLabel.setText(message);
             setPopupVisible(infoPopup, true);
         }
@@ -84,26 +87,32 @@ public class GameMenuController implements Initializable {
     
     @FXML
     private void onInfoPopupClose() {
+        sound.playClick();
         setPopupVisible(infoPopup, false);
     }
 
     @FXML
     private void onFieldClicked() {
+        sound.playClick();
         SceneManager.getInstance().switchScene("Field");
     }
 
     @FXML
     private void onStoreClicked() {
+        sound.playClick();
         SceneManager.getInstance().switchScene("Store");
     }
 
     @FXML
     private void onSkipDayClicked() {
+        sound.playClick();
+        sound.playPopup();
         setPopupVisible(skipDayConfirmPane, true);
     }
     
     @FXML
     private void onSkipDayConfirm() {
+        sound.playClick();
         hideAllPopups();
         gameState.skipDay();
         updateDisplay();
@@ -112,26 +121,32 @@ public class GameMenuController implements Initializable {
     
     @FXML
     private void onSkipDayCancel() {
+        sound.playClick();
         setPopupVisible(skipDayConfirmPane, false);
     }
 
     @FXML
     private void onRetireClicked() {
+        sound.playClick();
+        sound.playPopup();
         setPopupVisible(retireConfirmPane, true);
     }
     
     @FXML
     private void onRetireConfirm() {
+        sound.playClick();
         hideAllPopups();
         showSeasonOver();
     }
     
     @FXML
     private void onRetireCancel() {
+        sound.playClick();
         setPopupVisible(retireConfirmPane, false);
     }
 
     private void showGameOver() {
+        sound.playError();
         gameState.endGame();
         setPopupVisible(gameOverPane, true);
     }
@@ -142,8 +157,11 @@ public class GameMenuController implements Initializable {
         if (seasonOverPane != null && finalScoreLabel != null) {
             finalScoreLabel.setText(gameState.getCoins() + " coins");
             if (gameState.getCoins() <= 0) {
+                sound.playError();
                 finalScoreLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 30px; -fx-font-weight: bold;");
             } else {
+                sound.playSuccess();
+                sound.playCoins();
                 finalScoreLabel.setStyle("-fx-text-fill: #27ae60; -fx-font-size: 30px; -fx-font-weight: bold;");
             }
             setPopupVisible(seasonOverPane, true);
@@ -152,6 +170,7 @@ public class GameMenuController implements Initializable {
 
     @FXML
     private void onReturnToMenu() {
+        sound.playClick();
         SceneManager.getInstance().switchScene("MainMenu");
     }
 }

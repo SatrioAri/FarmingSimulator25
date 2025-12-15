@@ -1,5 +1,6 @@
 package com.farmingcmulator;
 
+import com.farmingcmulator.util.SoundManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -14,6 +15,14 @@ public class MainApp extends Application {
         primaryStage.setWidth(1920);
         primaryStage.setHeight(1080);
         primaryStage.setMaximized(true);
+        
+        // Start background music
+        SoundManager.getInstance().playBGM();
+        
+        // Handle window close - cleanup sounds
+        primaryStage.setOnCloseRequest(event -> {
+            SoundManager.getInstance().dispose();
+        });
         
         SceneManager.getInstance().switchScene("MainMenu");
         primaryStage.show();

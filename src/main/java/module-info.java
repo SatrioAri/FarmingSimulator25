@@ -2,6 +2,7 @@ module com.farmingcmulator {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
+    requires javafx.media;
 
     opens com.farmingcmulator to javafx.fxml;
     opens com.farmingcmulator.controller to javafx.fxml;

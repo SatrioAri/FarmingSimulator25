@@ -4,6 +4,7 @@ import com.farmingcmulator.GameState;
 import com.farmingcmulator.SceneManager;
 import com.farmingcmulator.model.Crop;
 import com.farmingcmulator.model.Rarity;
+import com.farmingcmulator.util.SoundManager;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -29,6 +30,7 @@ public class StoreController implements Initializable {
     @FXML private Label confirmPopupLabel;
     
     private GameState gameState;
+    private SoundManager sound = SoundManager.getInstance();
     private int pendingBoxType;
     private int pendingCost;
 
@@ -67,6 +69,7 @@ public class StoreController implements Initializable {
     
     private void showInfoPopup(String message) {
         if (infoPopupLabel != null && infoPopup != null) {
+            sound.playPopup();
             infoPopupLabel.setText(message);
             setPopupVisible(infoPopup, true);
         }
@@ -74,11 +77,13 @@ public class StoreController implements Initializable {
     
     @FXML
     private void onInfoPopupClose() {
+        sound.playClick();
         setPopupVisible(infoPopup, false);
     }
     
     private void showConfirmPopup(String message) {
         if (confirmPopupLabel != null && confirmPopup != null) {
+            sound.playPopup();
             confirmPopupLabel.setText(message);
             setPopupVisible(confirmPopup, true);
         }
@@ -86,12 +91,14 @@ public class StoreController implements Initializable {
     
     @FXML
     private void onConfirmYes() {
+        sound.playClick();
         hideAllPopups();
         executePurchase(pendingBoxType, pendingCost);
     }
     
     @FXML
     private void onConfirmNo() {
+        sound.playClick();
         hideAllPopups();
         pendingBoxType = 0;
         pendingCost = 0;
@@ -99,21 +106,25 @@ public class StoreController implements Initializable {
 
     @FXML
     private void onBuyCommonBox() {
+        sound.playClick();
         buyBox(1, "Common", 50);
     }
 
     @FXML
     private void onBuyRareBox() {
+        sound.playClick();
         buyBox(2, "Rare", 100);
     }
 
     @FXML
     private void onBuyEpicBox() {
+        sound.playClick();
         buyBox(3, "Epic", 200);
     }
 
     private void buyBox(int boxType, String boxName, int cost) {
         if (gameState.noActionsRemaining()) {
+            sound.playError();
             showInfoPopup("No actions remaining today!");
             return;
         }
@@ -132,6 +143,7 @@ public class StoreController implements Initializable {
         Crop crop = gameState.buySeedBox(boxType);
         
         if (crop != null) {
+            sound.playPurchase();
             showPurchaseResult(crop);
             updateDisplay();
         }
@@ -144,16 +156,19 @@ public class StoreController implements Initializable {
         purchaseNewLabel.setText("(" + crop.getRarity() + ")");
         purchaseNewLabel.setStyle("-fx-text-fill: " + Rarity.getColor(crop.getRarity()) + ";");
         
+        sound.playSuccess();
         setPopupVisible(purchaseResultPopup, true);
     }
 
     @FXML
     private void onPurchaseResultClose() {
+        sound.playClick();
         hideAllPopups();
     }
 
     @FXML
     private void onBackClicked() {
+        sound.playClick();
         SceneManager.getInstance().switchScene("GameMenu");
     }
 }

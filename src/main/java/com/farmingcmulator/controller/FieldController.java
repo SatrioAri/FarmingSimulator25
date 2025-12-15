@@ -6,6 +6,7 @@ import com.farmingcmulator.model.Inventory;
 import com.farmingcmulator.model.Plot;
 import com.farmingcmulator.model.Rarity;
 import com.farmingcmulator.util.Randomizer;
+import com.farmingcmulator.util.SoundManager;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -52,6 +53,7 @@ public class FieldController implements Initializable {
     @FXML private ProgressBar harvestQualityBar;
     
     private GameState gameState;
+    private SoundManager sound = SoundManager.getInstance();
     private VBox[] plotBoxes;
     private Label[] plotLabels;
     private Label[] plotWaters;
@@ -190,6 +192,7 @@ public class FieldController implements Initializable {
                     return;
                 }
                 if (gameState.waterCrop(plotIndex)) {
+                    sound.playWater();
                     showInfoPopup("Watered! Water left: " + plot.getWaterRemaining());
                     updateDisplay();
                 }
@@ -212,6 +215,7 @@ public class FieldController implements Initializable {
                 String cropRarity = plot.getCropRarity();
                 int[] result = gameState.harvestCrop(plotIndex);
                 if (result != null) {
+                    sound.playHarvest();
                     showHarvestResult(cropName, cropRarity, result[2], result[0], result[1]);
                 }
                 break;
@@ -220,6 +224,7 @@ public class FieldController implements Initializable {
 
     @FXML
     private void onPlantClicked() {
+        sound.playClick();
         if (currentAction.equals("plant")) {
             currentAction = "";
             resetAllActionButtons();
@@ -227,6 +232,7 @@ public class FieldController implements Initializable {
         }
         
         if (gameState.getInventory().isEmpty()) {
+            sound.playError();
             showInfoPopup("Inventory empty! Buy seeds at store.");
             return;
         }
@@ -238,6 +244,7 @@ public class FieldController implements Initializable {
 
     @FXML
     private void onWaterClicked() {
+        sound.playClick();
         if (currentAction.equals("water")) {
             currentAction = "";
             resetAllActionButtons();
@@ -251,6 +258,7 @@ public class FieldController implements Initializable {
 
     @FXML
     private void onHarvestClicked() {
+        sound.playClick();
         if (currentAction.equals("harvest")) {
             currentAction = "";
             resetAllActionButtons();
@@ -264,6 +272,7 @@ public class FieldController implements Initializable {
 
     private void showInfoPopup(String message) {
         if (infoPopupLabel != null && infoPopup != null) {
+            sound.playPopup();
             infoPopupLabel.setText(message);
             setPopupVisible(infoPopup, true);
         }
@@ -271,10 +280,12 @@ public class FieldController implements Initializable {
     
     @FXML
     private void onInfoPopupClose() {
+        sound.playClick();
         setPopupVisible(infoPopup, false);
     }
 
     private void showInventoryPopup() {
+        sound.playPopup();
         List<String> items = new ArrayList<>();
         for (Inventory inv : gameState.getInventory()) {
             items.add(inv.getCrop().getName() + " (" + inv.getCrop().getRarity() + ") x" + inv.getQuantity());
@@ -296,6 +307,7 @@ public class FieldController implements Initializable {
         Inventory selectedItem = inventory.get(selectedIndex);
         
         if (gameState.plantCrop(selectedPlotIndex, selectedItem)) {
+            sound.playPlant();
             hideAllPopups();
             updateDisplay();
             showInfoPopup("Planted " + selectedItem.getCrop().getName() + " on Plot " + (selectedPlotIndex + 1));
@@ -306,6 +318,7 @@ public class FieldController implements Initializable {
 
     @FXML
     private void onInventoryCancel() {
+        sound.playClick();
         hideAllPopups();
         selectedPlotIndex = -1;
     }
@@ -328,17 +341,21 @@ public class FieldController implements Initializable {
         
         harvestQualityBar.setProgress(quality / 100.0);
         
+        sound.playSuccess();
+        sound.playCoins();
         setPopupVisible(harvestResultPopup, true);
     }
 
     @FXML
     private void onHarvestResultClose() {
+        sound.playClick();
         hideAllPopups();
         updateDisplay();
     }
 
     @FXML
     private void onBackClicked() {
+        sound.playClick();
         SceneManager.getInstance().switchScene("GameMenu");
     }
 }
