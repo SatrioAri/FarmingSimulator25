@@ -48,28 +48,6 @@ This project was developed as a JavaFX GUI application, demonstrating object-ori
 
 ---
 
-## 🎮 Screenshots
-
-<div align="center">
-
-| Main Menu | Game Menu |
-|:---------:|:---------:|
-| *Main menu with play, database, and exit options* | *Central hub showing stats and action buttons* |
-
-| Field View | Store |
-|:----------:|:-----:|
-| *Manage your 5 farm plots* | *Purchase seed boxes with different rarities* |
-
-| Harvest Result | Database |
-|:--------------:|:--------:|
-| *Quality-based earnings calculation* | *Track your crop collection progress* |
-
-</div>
-
-> 📸 *Add your own screenshots to the `screenshots/` folder*
-
----
-
 ## 🚀 Installation
 
 ### Prerequisites
@@ -204,14 +182,6 @@ Contributions are welcome! Here are some ways you can help:
 3. **Pull Requests**: Submit code changes
 4. **Documentation**: Improve README or add comments
 
-### Development Setup
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
-
 ---
 
 ## 📜 License
@@ -221,7 +191,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ```
 MIT License
 
-Copyright (c) 2024 [Your Name]
+Copyright (c) 2024 SatrioAri
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
