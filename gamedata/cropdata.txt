@@ -4,19 +4,19 @@
 4,Potato,Common,Not
 5,Tomato,Common,Not
 6,Lettuce,Common,Not
-7,Onion,Common,Not
+7,Onion,Common,Obtained
 8,Cabbage,Common,Not
-9,Radish,Common,Not
+9,Radish,Common,Obtained
 10,Spinach,Common,Obtained
 11,Cucumber,Common,Not
 12,Peas,Common,Obtained
-13,Beans,Common,Not
+13,Beans,Common,Obtained
 14,Garlic,Common,Not
 15,Celery,Common,Obtained
 16,Turnip,Common,Obtained
 17,Beet,Common,Not
 18,Pumpkin,Uncommon,Not
-19,Melon,Uncommon,Not
+19,Melon,Uncommon,Obtained
 20,Strawberry,Uncommon,Not
 21,Blueberry,Uncommon,Obtained
 22,Grape,Uncommon,Not
@@ -30,7 +30,7 @@
 30,Eggplant,Rare,Not
 31,Pepper,Rare,Not
 32,Artichoke,Rare,Not
-33,Asparagus,Rare,Not
+33,Asparagus,Rare,Obtained
 34,Broccoli,Rare,Not
 35,Cauliflower,Rare,Obtained
 36,Zucchini,Rare,Not
@@ -45,4 +45,4 @@
 45,Jackfruit,Epic,Not
 46,Rambutan,Epic,Obtained
 47,Golden Apple,Legendary,Not
-48,Crystal Melon,Legendary,Not
+48,Crystal Melon,Legendary,Obtained
