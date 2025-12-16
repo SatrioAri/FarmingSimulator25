@@ -18,7 +18,7 @@ public class SoundManager {
     // Background music
     private MediaPlayer bgmPlayer;
     private boolean bgmEnabled = true;
-    private double bgmVolume = 0.3;
+    private double bgmVolume = 0.5;
     
     // Sound effects
     private boolean sfxEnabled = true;
