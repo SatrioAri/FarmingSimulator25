@@ -19,7 +19,7 @@
 
 ## 📖 About
 
-**Farming C-Mulator** is a casual farming simulation game where players manage a small farm over a 30-day season. Buy seed boxes from the store, plant crops in your fields, water them daily, and harvest when ready to earn coins. The game features a gacha-style seed box system with varying rarities, quality-based harvest bonuses, and a highscore system to track your farming achievements.
+**Farming Simulator** is a casual farming simulation game where players manage a small farm over a 30-day season. Buy seed boxes from the store, plant crops in your fields, water them daily, and harvest when ready to earn coins. The game features a gacha-style seed box system with varying rarities, quality-based harvest bonuses, and a highscore system to track your farming achievements.
 
 This project was developed as a JavaFX GUI application, demonstrating object-oriented programming principles, MVC architecture, and modern UI/UX design.
 

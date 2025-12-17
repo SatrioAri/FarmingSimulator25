@@ -11,7 +11,7 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         SceneManager.getInstance().initialize(primaryStage);
 
-        primaryStage.setTitle("Farming C-mulator");
+        primaryStage.setTitle("Farming Simulator");
         primaryStage.setResizable(false);
         primaryStage.setWidth(1920);
         primaryStage.setHeight(1080);
