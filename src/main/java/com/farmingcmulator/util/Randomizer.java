@@ -42,7 +42,12 @@ public class Randomizer {
     }
     
     public int[] harvestWithQuality(int basePrice) {
-        int quality = random.nextInt(101);
+        return harvestWithQuality(basePrice, 0, 0);
+    }
+
+    public int[] harvestWithQuality(int basePrice, int penalty, int harvestBonus) {
+        // Base quality 0-100, minus penalty for not watering, plus harvest upgrade bonus
+        int quality = Math.max(0, Math.min(100, random.nextInt(101) - penalty + harvestBonus));
         int bonus = (int) Math.round(basePrice * quality / 100.0);
         int finalPrice = basePrice + bonus;
         return new int[] { finalPrice, quality };

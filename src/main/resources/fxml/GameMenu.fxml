@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -49,7 +50,7 @@
                     <Region prefWidth="25"/>
                     
                     <!-- Coins -->
-                    <VBox alignment="CENTER" spacing="3" styleClass="status-box">
+                    <VBox fx:id="coinsBox" alignment="CENTER" spacing="3" styleClass="status-box" onMouseClicked="#onCoinsBoxClicked">
                         <Label text="COINS" styleClass="status-text"/>
                         <Label fx:id="coinsLabel" text="100" styleClass="status-value"/>
                     </VBox>
@@ -61,7 +62,23 @@
                         <Label text="ACTIONS" styleClass="status-text"/>
                         <Label fx:id="actionsRemainingLabel" text="10" styleClass="status-value"/>
                     </VBox>
-                    
+
+                    <Region prefWidth="25"/>
+
+                    <!-- Level & EXP -->
+                    <VBox alignment="CENTER" spacing="3" styleClass="status-box">
+                        <Label text="LEVEL" styleClass="status-text"/>
+                        <Label fx:id="levelLabel" text="1" styleClass="status-value"/>
+                    </VBox>
+
+                    <Region prefWidth="15"/>
+
+                    <VBox fx:id="expBox" alignment="CENTER" spacing="4" styleClass="status-box" prefWidth="150" onMouseClicked="#onExpBoxClicked">
+                        <Label text="EXP" styleClass="status-text"/>
+                        <ProgressBar fx:id="expBar" progress="0.0" prefWidth="130" prefHeight="14" styleClass="exp-bar"/>
+                        <Label fx:id="expLabel" text="0/100" style="-fx-font-size: 11px; -fx-text-fill: #A8E09A;"/>
+                    </VBox>
+
                 </HBox>
             </VBox>
         </top>

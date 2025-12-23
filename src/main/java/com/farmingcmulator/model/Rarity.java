@@ -42,12 +42,12 @@ public class Rarity {
     
     public static String getCssClass(String rarityName) {
         switch (rarityName) {
-            case "Common": return "rarity-common";
-            case "Uncommon": return "rarity-uncommon";
-            case "Rare": return "rarity-rare";
-            case "Epic": return "rarity-epic";
-            case "Legendary": return "rarity-legendary";
-            default: return "rarity-common";
+            case "Common": return "plot-rarity-common";
+            case "Uncommon": return "plot-rarity-uncommon";
+            case "Rare": return "plot-rarity-rare";
+            case "Epic": return "plot-rarity-epic";
+            case "Legendary": return "plot-rarity-legendary";
+            default: return "plot-rarity-common";
         }
     }
 }

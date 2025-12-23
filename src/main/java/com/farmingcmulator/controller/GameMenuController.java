@@ -6,10 +6,13 @@ import com.farmingcmulator.util.SoundManager;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GameMenuController implements Initializable {
 
@@ -17,6 +20,9 @@ public class GameMenuController implements Initializable {
     @FXML private Label daysRemainingLabel;
     @FXML private Label coinsLabel;
     @FXML private Label actionsRemainingLabel;
+    @FXML private Label levelLabel;
+    @FXML private Label expLabel;
+    @FXML private ProgressBar expBar;
     
     @FXML private VBox gameOverPane;
     @FXML private VBox seasonOverPane;
@@ -27,8 +33,17 @@ public class GameMenuController implements Initializable {
     @FXML private VBox infoPopup;
     @FXML private Label infoPopupLabel;
     
+    @FXML private VBox coinsBox;
+    @FXML private VBox expBox;
+
     private GameState gameState;
     private SoundManager sound = SoundManager.getInstance();
+
+    // Cheat code counters
+    private int coinsClickCount = 0;
+    private int expClickCount = 0;
+    private Timer coinsResetTimer;
+    private Timer expResetTimer;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -57,7 +72,12 @@ public class GameMenuController implements Initializable {
         daysRemainingLabel.setText(String.valueOf(gameState.getDaysRemaining()));
         coinsLabel.setText(String.valueOf(gameState.getCoins()));
         actionsRemainingLabel.setText(String.valueOf(gameState.getActionsRemaining()));
-        
+
+        // Update level and EXP display
+        levelLabel.setText(String.valueOf(gameState.getPlayerLevel()));
+        expLabel.setText(gameState.getCurrentExp() + "/" + gameState.getExpForNextLevel());
+        expBar.setProgress(gameState.getExpProgress());
+
         if (gameState.getCoins() < -400) {
             coinsLabel.setStyle("-fx-text-fill: #e74c3c; -fx-font-size: 24px; -fx-font-weight: bold;");
         } else if (gameState.getCoins() < 0) {
@@ -65,7 +85,7 @@ public class GameMenuController implements Initializable {
         } else {
             coinsLabel.setStyle("-fx-text-fill: #27ae60; -fx-font-size: 24px; -fx-font-weight: bold;");
         }
-        
+
         checkGameState();
     }
 
@@ -172,5 +192,59 @@ public class GameMenuController implements Initializable {
     private void onReturnToMenu() {
         sound.playClick();
         SceneManager.getInstance().switchScene("MainMenu");
+    }
+
+    // ==================== CHEAT CODES (sneaky, no visual feedback) ====================
+
+    @FXML
+    private void onCoinsBoxClicked() {
+        // Cancel previous timer if exists
+        if (coinsResetTimer != null) {
+            coinsResetTimer.cancel();
+        }
+
+        coinsClickCount++;
+
+        if (coinsClickCount >= 5) {
+            // Add 200 coins silently
+            gameState.addCoins(200);
+            updateDisplay();
+            coinsClickCount = 0;
+        } else {
+            // Reset counter after 2 seconds of no clicks
+            coinsResetTimer = new Timer();
+            coinsResetTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    coinsClickCount = 0;
+                }
+            }, 2000);
+        }
+    }
+
+    @FXML
+    private void onExpBoxClicked() {
+        // Cancel previous timer if exists
+        if (expResetTimer != null) {
+            expResetTimer.cancel();
+        }
+
+        expClickCount++;
+
+        if (expClickCount >= 5) {
+            // Add 1 level silently
+            gameState.addLevel();
+            updateDisplay();
+            expClickCount = 0;
+        } else {
+            // Reset counter after 2 seconds of no clicks
+            expResetTimer = new Timer();
+            expResetTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    expClickCount = 0;
+                }
+            }, 2000);
+        }
     }
 }

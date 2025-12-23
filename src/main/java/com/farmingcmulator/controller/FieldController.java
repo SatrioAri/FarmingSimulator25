@@ -14,9 +14,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,23 +27,41 @@ import java.util.ResourceBundle;
 public class FieldController implements Initializable {
 
     @FXML private Label actionsLabel;
-    
-    @FXML private VBox plot1Box, plot2Box, plot3Box, plot4Box, plot5Box;
+
+    // Plot boxes (StackPane for layered layout with badge)
+    @FXML private StackPane plot1Box, plot2Box, plot3Box, plot4Box, plot5Box;
+    @FXML private StackPane plot6Box, plot7Box, plot8Box, plot9Box, plot10Box;
+
+    // Plot labels
     @FXML private Label plot1Label, plot2Label, plot3Label, plot4Label, plot5Label;
+    @FXML private Label plot6Label, plot7Label, plot8Label, plot9Label, plot10Label;
+
+    // Plot water labels
     @FXML private Label plot1Water, plot2Water, plot3Water, plot4Water, plot5Water;
+    @FXML private Label plot6Water, plot7Water, plot8Water, plot9Water, plot10Water;
+
+    // Plot days labels
     @FXML private Label plot1Days, plot2Days, plot3Days, plot4Days, plot5Days;
-    @FXML private Circle plot1Circle, plot2Circle, plot3Circle, plot4Circle, plot5Circle;
-    
+    @FXML private Label plot6Days, plot7Days, plot8Days, plot9Days, plot10Days;
+
+    // Plot number labels
+    @FXML private Label plot1Number, plot2Number, plot3Number, plot4Number, plot5Number;
+    @FXML private Label plot6Number, plot7Number, plot8Number, plot9Number, plot10Number;
+
+    // Plot images
+    @FXML private ImageView plot1Image, plot2Image, plot3Image, plot4Image, plot5Image;
+    @FXML private ImageView plot6Image, plot7Image, plot8Image, plot9Image, plot10Image;
+
     @FXML private Button plantButton;
     @FXML private Button waterButton;
     @FXML private Button harvestButton;
-    
+
     @FXML private VBox inventoryPopup;
     @FXML private VBox harvestResultPopup;
     @FXML private VBox infoPopup;
     @FXML private ListView<String> inventoryListView;
     @FXML private Label infoPopupLabel;
-    
+
     @FXML private Label harvestCropLabel;
     @FXML private Label harvestQualityLabel;
     @FXML private Label harvestGradeLabel;
@@ -51,28 +70,52 @@ public class FieldController implements Initializable {
     @FXML private Label harvestBonusLabel;
     @FXML private Label harvestTotalLabel;
     @FXML private ProgressBar harvestQualityBar;
-    
+
     private GameState gameState;
     private SoundManager sound = SoundManager.getInstance();
-    private VBox[] plotBoxes;
+
+    private StackPane[] plotBoxes;
     private Label[] plotLabels;
     private Label[] plotWaters;
     private Label[] plotDaysLabels;
-    private Circle[] plotCircles;
-    
+    private Label[] plotNumbers;
+    private ImageView[] plotImages;
+
     private int selectedPlotIndex = -1;
     private String currentAction = "";
+
+    private Image placeholderImage;
+    private Image lockedImage;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gameState = GameState.getInstance();
-        
-        plotBoxes = new VBox[] { plot1Box, plot2Box, plot3Box, plot4Box, plot5Box };
-        plotLabels = new Label[] { plot1Label, plot2Label, plot3Label, plot4Label, plot5Label };
-        plotWaters = new Label[] { plot1Water, plot2Water, plot3Water, plot4Water, plot5Water };
-        plotDaysLabels = new Label[] { plot1Days, plot2Days, plot3Days, plot4Days, plot5Days };
-        plotCircles = new Circle[] { plot1Circle, plot2Circle, plot3Circle, plot4Circle, plot5Circle };
-        
+
+        plotBoxes = new StackPane[] { plot1Box, plot2Box, plot3Box, plot4Box, plot5Box,
+                                       plot6Box, plot7Box, plot8Box, plot9Box, plot10Box };
+        plotLabels = new Label[] { plot1Label, plot2Label, plot3Label, plot4Label, plot5Label,
+                                    plot6Label, plot7Label, plot8Label, plot9Label, plot10Label };
+        plotWaters = new Label[] { plot1Water, plot2Water, plot3Water, plot4Water, plot5Water,
+                                    plot6Water, plot7Water, plot8Water, plot9Water, plot10Water };
+        plotDaysLabels = new Label[] { plot1Days, plot2Days, plot3Days, plot4Days, plot5Days,
+                                        plot6Days, plot7Days, plot8Days, plot9Days, plot10Days };
+        plotNumbers = new Label[] { plot1Number, plot2Number, plot3Number, plot4Number, plot5Number,
+                                     plot6Number, plot7Number, plot8Number, plot9Number, plot10Number };
+        plotImages = new ImageView[] { plot1Image, plot2Image, plot3Image, plot4Image, plot5Image,
+                                        plot6Image, plot7Image, plot8Image, plot9Image, plot10Image };
+
+        // Load placeholder images
+        try {
+            placeholderImage = new Image(getClass().getResourceAsStream("/images/crops/placeholder.png"));
+        } catch (Exception e) {
+            placeholderImage = null;
+        }
+        try {
+            lockedImage = new Image(getClass().getResourceAsStream("/images/crops/locked.png"));
+        } catch (Exception e) {
+            lockedImage = null;
+        }
+
         hideAllPopups();
         updateDisplay();
         resetAllActionButtons();
@@ -80,36 +123,86 @@ public class FieldController implements Initializable {
 
     private void updateDisplay() {
         actionsLabel.setText("Actions: " + gameState.getActionsRemaining());
-        
+
         List<Plot> plots = gameState.getPlots();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < GameState.NUM_PLOTS; i++) {
             updatePlotDisplay(i, plots.get(i));
         }
     }
 
     private void updatePlotDisplay(int index, Plot plot) {
+        boolean isUnlocked = gameState.isPlotUnlocked(index);
+
+        // Clear all dynamic style classes first
+        plotBoxes[index].getStyleClass().removeAll(
+            "plot-card-locked", "plot-card-ready",
+            "plot-rarity-common", "plot-rarity-uncommon", "plot-rarity-rare",
+            "plot-rarity-epic", "plot-rarity-legendary"
+        );
+        plotBoxes[index].setStyle(""); // Clear inline styles
+
+        if (!isUnlocked) {
+            // Locked plot
+            int reqLevel = gameState.getPlotRequiredLevel(index);
+            plotLabels[index].setText("Locked");
+            plotWaters[index].setText("Req: Lv." + reqLevel);
+            plotDaysLabels[index].setText("");
+            plotNumbers[index].setText(String.valueOf(index + 1));
+            plotBoxes[index].getStyleClass().add("plot-card-locked");
+
+            if (lockedImage != null) {
+                plotImages[index].setImage(lockedImage);
+            } else {
+                plotImages[index].setImage(null);
+            }
+            return;
+        }
+
+        plotNumbers[index].setText(String.valueOf(index + 1));
+
         if (plot.isEmpty()) {
             plotLabels[index].setText("Empty");
-            plotLabels[index].setStyle("-fx-text-fill: #7f8c8d;");
+            plotLabels[index].setStyle("");
             plotWaters[index].setText("");
             plotDaysLabels[index].setText("");
-            plotCircles[index].setFill(Color.web("#bdc3c7"));
-            plotCircles[index].setVisible(false);
-            plotBoxes[index].setStyle("-fx-background-color: rgba(255,255,255,0.92); -fx-background-radius: 18;");
+
+            if (placeholderImage != null) {
+                plotImages[index].setImage(placeholderImage);
+            } else {
+                plotImages[index].setImage(null);
+            }
         } else {
             plotLabels[index].setText(plot.getCropName());
-            plotLabels[index].setStyle("-fx-text-fill: " + plot.getRarityColor() + "; -fx-font-weight: bold;");
+            plotLabels[index].setStyle(""); // Let CSS handle the color based on rarity
             plotWaters[index].setText("Water: " + plot.getWaterRemaining());
             plotDaysLabels[index].setText("Days: " + plot.getDaysRemaining());
-            plotCircles[index].setFill(Color.web(plot.getRarityColor()));
-            plotCircles[index].setVisible(true);
-            
+
+            // Load crop image
+            Image cropImage = loadCropImage(plot.getCropName());
+            plotImages[index].setImage(cropImage);
+
+            // Apply rarity style - this will set background, border, and text colors
+            String rarityClass = Rarity.getCssClass(plot.getCropRarity());
+            plotBoxes[index].getStyleClass().add(rarityClass);
+
+            // Apply ready-to-harvest style if applicable (adds green highlight)
             if (plot.isReadyToHarvest()) {
-                plotBoxes[index].setStyle("-fx-background-color: #d5f5e3; -fx-background-radius: 18; -fx-border-color: #27ae60; -fx-border-width: 4; -fx-border-radius: 18;");
-            } else {
-                plotBoxes[index].setStyle("-fx-background-color: #fef9e7; -fx-background-radius: 18;");
+                plotBoxes[index].getStyleClass().add("plot-card-ready");
             }
         }
+    }
+
+    private Image loadCropImage(String cropName) {
+        try {
+            String filename = cropName.toLowerCase().replace(" ", "_") + ".png";
+            Image img = new Image(getClass().getResourceAsStream("/images/crops/" + filename));
+            if (img != null && !img.isError()) {
+                return img;
+            }
+        } catch (Exception e) {
+            // Fall through to placeholder
+        }
+        return placeholderImage;
     }
 
     private void hideAllPopups() {
@@ -117,14 +210,14 @@ public class FieldController implements Initializable {
         setPopupVisible(harvestResultPopup, false);
         setPopupVisible(infoPopup, false);
     }
-    
+
     private void setPopupVisible(VBox popup, boolean visible) {
         if (popup != null) {
             popup.setVisible(visible);
             popup.setManaged(visible);
         }
     }
-    
+
     private void resetAllActionButtons() {
         if (plantButton != null) {
             plantButton.getStyleClass().removeAll("field-action-btn-plant-active");
@@ -145,7 +238,7 @@ public class FieldController implements Initializable {
             }
         }
     }
-    
+
     private void setButtonActive(Button button, String normalClass, String activeClass) {
         button.getStyleClass().removeAll(normalClass);
         if (!button.getStyleClass().contains(activeClass)) {
@@ -153,17 +246,30 @@ public class FieldController implements Initializable {
         }
     }
 
+    // Plot click handlers
     @FXML private void onPlot1Clicked() { handlePlotClick(0); }
     @FXML private void onPlot2Clicked() { handlePlotClick(1); }
     @FXML private void onPlot3Clicked() { handlePlotClick(2); }
     @FXML private void onPlot4Clicked() { handlePlotClick(3); }
     @FXML private void onPlot5Clicked() { handlePlotClick(4); }
+    @FXML private void onPlot6Clicked() { handlePlotClick(5); }
+    @FXML private void onPlot7Clicked() { handlePlotClick(6); }
+    @FXML private void onPlot8Clicked() { handlePlotClick(7); }
+    @FXML private void onPlot9Clicked() { handlePlotClick(8); }
+    @FXML private void onPlot10Clicked() { handlePlotClick(9); }
 
     private void handlePlotClick(int plotIndex) {
         if (currentAction.isEmpty()) return;
-        
+
+        // Check if plot is unlocked
+        if (!gameState.isPlotUnlocked(plotIndex)) {
+            int reqLevel = gameState.getPlotRequiredLevel(plotIndex);
+            showInfoPopup("This plot is locked! Reach Level " + reqLevel + " to unlock.");
+            return;
+        }
+
         Plot plot = gameState.getPlots().get(plotIndex);
-        
+
         switch (currentAction) {
             case "plant":
                 if (!plot.isEmpty()) {
@@ -177,7 +283,7 @@ public class FieldController implements Initializable {
                 selectedPlotIndex = plotIndex;
                 showInventoryPopup();
                 break;
-                
+
             case "water":
                 if (plot.isEmpty()) {
                     showInfoPopup("This plot is empty!");
@@ -193,11 +299,17 @@ public class FieldController implements Initializable {
                 }
                 if (gameState.waterCrop(plotIndex)) {
                     sound.playWater();
-                    showInfoPopup("Watered! Water left: " + plot.getWaterRemaining());
+                    int waterCapacity = gameState.getWaterCapacity();
+                    String msg = "Watered";
+                    if (waterCapacity > 1) {
+                        msg += " (x" + waterCapacity + ")";
+                    }
+                    msg += "! Water left: " + plot.getWaterRemaining();
+                    showInfoPopup(msg);
                     updateDisplay();
                 }
                 break;
-                
+
             case "harvest":
                 if (plot.isEmpty()) {
                     showInfoPopup("This plot is empty!");
@@ -216,7 +328,7 @@ public class FieldController implements Initializable {
                 int[] result = gameState.harvestCrop(plotIndex);
                 if (result != null) {
                     sound.playHarvest();
-                    showHarvestResult(cropName, cropRarity, result[2], result[0], result[1]);
+                    showHarvestResult(cropName, cropRarity, result[2], result[0], result[1], result[3]);
                 }
                 break;
         }
@@ -230,13 +342,13 @@ public class FieldController implements Initializable {
             resetAllActionButtons();
             return;
         }
-        
+
         if (gameState.getInventory().isEmpty()) {
             sound.playError();
             showInfoPopup("Inventory empty! Buy seeds at store.");
             return;
         }
-        
+
         currentAction = "plant";
         resetAllActionButtons();
         setButtonActive(plantButton, "field-action-btn-plant", "field-action-btn-plant-active");
@@ -250,7 +362,7 @@ public class FieldController implements Initializable {
             resetAllActionButtons();
             return;
         }
-        
+
         currentAction = "water";
         resetAllActionButtons();
         setButtonActive(waterButton, "field-action-btn-water", "field-action-btn-water-active");
@@ -264,7 +376,7 @@ public class FieldController implements Initializable {
             resetAllActionButtons();
             return;
         }
-        
+
         currentAction = "harvest";
         resetAllActionButtons();
         setButtonActive(harvestButton, "field-action-btn-harvest", "field-action-btn-harvest-active");
@@ -277,7 +389,7 @@ public class FieldController implements Initializable {
             setPopupVisible(infoPopup, true);
         }
     }
-    
+
     @FXML
     private void onInfoPopupClose() {
         sound.playClick();
@@ -290,7 +402,7 @@ public class FieldController implements Initializable {
         for (Inventory inv : gameState.getInventory()) {
             items.add(inv.getCrop().getName() + " (" + inv.getCrop().getRarity() + ") x" + inv.getQuantity());
         }
-        
+
         inventoryListView.getItems().clear();
         inventoryListView.getItems().addAll(items);
         setPopupVisible(inventoryPopup, true);
@@ -300,19 +412,19 @@ public class FieldController implements Initializable {
     private void onCropSelected() {
         int selectedIndex = inventoryListView.getSelectionModel().getSelectedIndex();
         if (selectedIndex < 0) return;
-        
+
         List<Inventory> inventory = gameState.getInventory();
         if (selectedIndex >= inventory.size()) return;
-        
+
         Inventory selectedItem = inventory.get(selectedIndex);
-        
+
         if (gameState.plantCrop(selectedPlotIndex, selectedItem)) {
             sound.playPlant();
             hideAllPopups();
             updateDisplay();
             showInfoPopup("Planted " + selectedItem.getCrop().getName() + " on Plot " + (selectedPlotIndex + 1));
         }
-        
+
         selectedPlotIndex = -1;
     }
 
@@ -323,24 +435,24 @@ public class FieldController implements Initializable {
         selectedPlotIndex = -1;
     }
 
-    private void showHarvestResult(String cropName, String rarity, int basePrice, int finalPrice, int quality) {
+    private void showHarvestResult(String cropName, String rarity, int basePrice, int finalPrice, int quality, int expGained) {
         harvestCropLabel.setText(cropName + " (" + rarity + ")");
         harvestCropLabel.setStyle("-fx-text-fill: " + Rarity.getColor(rarity) + ";");
-        
+
         harvestQualityLabel.setText(quality + "%");
         harvestQualityLabel.setStyle("-fx-text-fill: " + Randomizer.getQualityColor(quality) + ";");
-        
+
         harvestGradeLabel.setText(Randomizer.getQualityTier(quality));
         harvestGradeLabel.setStyle("-fx-text-fill: " + Randomizer.getQualityColor(quality) + ";");
-        
+
         harvestMessageLabel.setText("\"" + Randomizer.getQualityMessage(quality) + "\"");
-        
+
         harvestBaseLabel.setText(basePrice + " coins");
         harvestBonusLabel.setText("+" + (finalPrice - basePrice) + " coins (+" + quality + "%)");
-        harvestTotalLabel.setText(finalPrice + " coins");
-        
+        harvestTotalLabel.setText(finalPrice + " coins | +" + expGained + " EXP");
+
         harvestQualityBar.setProgress(quality / 100.0);
-        
+
         sound.playSuccess();
         sound.playCoins();
         setPopupVisible(harvestResultPopup, true);
