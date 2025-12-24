@@ -1,48 +1,48 @@
-1,Wheat,Common,Obtained
-2,Corn,Common,Not
-3,Carrot,Common,Not
-4,Potato,Common,Not
-5,Tomato,Common,Not
-6,Lettuce,Common,Obtained
-7,Onion,Common,Obtained
-8,Cabbage,Common,Obtained
-9,Radish,Common,Obtained
-10,Spinach,Common,Obtained
-11,Cucumber,Common,Not
-12,Peas,Common,Obtained
-13,Beans,Common,Obtained
-14,Garlic,Common,Not
-15,Celery,Common,Obtained
-16,Turnip,Common,Obtained
-17,Beet,Common,Obtained
-18,Pumpkin,Uncommon,Obtained
-19,Melon,Uncommon,Obtained
-20,Strawberry,Uncommon,Obtained
-21,Blueberry,Uncommon,Obtained
-22,Grape,Uncommon,Obtained
-23,Apple,Uncommon,Obtained
-24,Orange,Uncommon,Not
-25,Peach,Uncommon,Not
-26,Cherry,Uncommon,Obtained
-27,Pear,Uncommon,Obtained
-28,Plum,Uncommon,Obtained
-29,Lemon,Uncommon,Obtained
-30,Eggplant,Rare,Obtained
-31,Pepper,Rare,Not
-32,Artichoke,Rare,Obtained
-33,Asparagus,Rare,Obtained
-34,Broccoli,Rare,Obtained
-35,Cauliflower,Rare,Obtained
-36,Zucchini,Rare,Not
-37,Avocado,Rare,Obtained
-38,Mango,Rare,Obtained
-39,Papaya,Rare,Not
-40,Pineapple,Rare,Obtained
-41,Dragon Fruit,Epic,Not
-42,Starfruit,Epic,Obtained
-43,Passion Fruit,Epic,Obtained
-44,Durian,Epic,Not
-45,Jackfruit,Epic,Obtained
-46,Rambutan,Epic,Obtained
-47,Golden Apple,Legendary,Obtained
-48,Crystal Melon,Legendary,Obtained
+1,Wheat,Common,Obtained,Fall
+2,Corn,Common,Not,Summer
+3,Carrot,Common,Not,Fall
+4,Potato,Common,Not,Fall
+5,Tomato,Common,Not,Summer
+6,Lettuce,Common,Obtained,Spring
+7,Onion,Common,Obtained,Fall
+8,Cabbage,Common,Obtained,Winter
+9,Radish,Common,Obtained,Spring
+10,Spinach,Common,Obtained,Spring
+11,Cucumber,Common,Not,Summer
+12,Peas,Common,Obtained,Spring
+13,Beans,Common,Obtained,Summer
+14,Garlic,Common,Not,Fall
+15,Celery,Common,Obtained,Spring
+16,Turnip,Common,Obtained,Winter
+17,Beet,Common,Obtained,Fall
+18,Pumpkin,Uncommon,Obtained,Fall
+19,Melon,Uncommon,Obtained,Summer
+20,Strawberry,Uncommon,Obtained,Spring
+21,Blueberry,Uncommon,Obtained,Summer
+22,Grape,Uncommon,Obtained,Fall
+23,Apple,Uncommon,Obtained,Fall
+24,Orange,Uncommon,Not,Winter
+25,Peach,Uncommon,Not,Summer
+26,Cherry,Uncommon,Obtained,Spring
+27,Pear,Uncommon,Obtained,Fall
+28,Plum,Uncommon,Obtained,Summer
+29,Lemon,Uncommon,Obtained,Winter
+30,Eggplant,Rare,Obtained,Summer
+31,Pepper,Rare,Not,Summer
+32,Artichoke,Rare,Obtained,Spring
+33,Asparagus,Rare,Obtained,Spring
+34,Broccoli,Rare,Obtained,Winter
+35,Cauliflower,Rare,Obtained,Winter
+36,Zucchini,Rare,Not,Summer
+37,Avocado,Rare,Obtained,Summer
+38,Mango,Rare,Obtained,Summer
+39,Papaya,Rare,Not,Summer
+40,Pineapple,Rare,Obtained,Summer
+41,Dragon Fruit,Epic,Obtained,Summer
+42,Starfruit,Epic,Obtained,Summer
+43,Passion Fruit,Epic,Obtained,Spring
+44,Durian,Epic,Not,Summer
+45,Jackfruit,Epic,Obtained,Summer
+46,Rambutan,Epic,Obtained,Summer
+47,Golden Apple,Legendary,Obtained,Fall
+48,Crystal Melon,Legendary,Obtained,Winter

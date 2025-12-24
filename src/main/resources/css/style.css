@@ -543,6 +543,50 @@
                 dropshadow(gaussian, rgba(255,217,102,0.7), 12, 0.6, 0, 0);
 }
 
+.field-action-btn-fertilize {
+    -fx-background-color: linear-gradient(to bottom, #A1887F, #8D6E63);
+    -fx-background-radius: 15;
+    -fx-border-color: #6D4C41;
+    -fx-border-width: 3;
+    -fx-border-radius: 15;
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 6, 0.3, 0, 3);
+}
+
+.field-action-btn-fertilize:hover {
+    -fx-background-color: linear-gradient(to bottom, #BCAAA4, #A1887F);
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.field-action-btn-fertilize:pressed {
+    -fx-background-color: linear-gradient(to bottom, #8D6E63, #6D4C41);
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.field-action-btn-fertilize-active {
+    -fx-background-color: linear-gradient(to bottom, #6D4C41, #4E342E);
+    -fx-background-radius: 15;
+    -fx-border-color: #FFD966;
+    -fx-border-width: 4;
+    -fx-border-radius: 15;
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.4), 6, 0.5, 0, 2),
+                dropshadow(gaussian, rgba(255,217,102,0.7), 12, 0.6, 0, 0);
+}
+
 .field-action-btn-harvest {
     -fx-background-color: linear-gradient(to bottom, #FFA726, #F57C00);
     -fx-background-radius: 15;

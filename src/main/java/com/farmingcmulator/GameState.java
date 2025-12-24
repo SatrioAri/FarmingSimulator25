@@ -34,6 +34,9 @@ public class GameState {
     // Upgrade system
     private int waterUpgradeLevel;
     private int harvestUpgradeLevel;
+
+    // Items
+    private int fertilizerCount;
     
     private List<Plot> plots;
     private List<Inventory> inventory;
@@ -73,6 +76,9 @@ public class GameState {
         this.waterUpgradeLevel = 0;
         this.harvestUpgradeLevel = 0;
 
+        // Initialize items
+        this.fertilizerCount = 0;
+
         plots.clear();
         for (int i = 1; i <= NUM_PLOTS; i++) {
             plots.add(new Plot(i));
@@ -86,21 +92,36 @@ public class GameState {
     public boolean plantCrop(int plotIndex, Inventory selectedItem) {
         if (actionsRemaining <= 0) return false;
         if (plotIndex < 0 || plotIndex >= NUM_PLOTS) return false;
-        
+
         Plot plot = plots.get(plotIndex);
         if (!plot.isEmpty()) return false;
         if (selectedItem == null || selectedItem.getQuantity() <= 0) return false;
-        
+
         Crop crop = selectedItem.getCrop();
         Rarity rarity = Rarity.getRarityByName(crop.getRarity());
-        
-        plot.plant(crop.getName(), crop.getRarity(), rarity.getWater(), rarity.getTime());
-        
+
+        int baseDays = rarity.getTime();
+        int baseWater = rarity.getWater();
+        int seasonQualityBonus = 0;
+
+        // Apply season effects
+        if (isCropInSeason(crop.getSeason())) {
+            // In-season: reduce days by 1, quality bonus +15%
+            baseDays = Math.max(1, baseDays - 1);
+            seasonQualityBonus = 15;
+        } else {
+            // Off-season: increase days by 1, quality penalty -10%
+            baseDays = baseDays + 1;
+            seasonQualityBonus = -10;
+        }
+
+        plot.plant(crop.getName(), crop.getRarity(), crop.getSeason(), baseWater, baseDays, seasonQualityBonus);
+
         selectedItem.setQuantity(selectedItem.getQuantity() - 1);
         if (selectedItem.getQuantity() <= 0) {
             inventory.remove(selectedItem);
         }
-        
+
         actionsRemaining--;
         return true;
     }
@@ -128,10 +149,12 @@ public class GameState {
         Rarity rarity = Rarity.getRarityByName(plot.getCropRarity());
         int basePrice = rarity.getSellValue();
 
-        // Get quality with penalty and harvest bonus
+        // Get quality with penalty, harvest bonus, season bonus, and fertilizer bonus
         int penalty = plot.getQualityPenalty();
         int harvestBonus = getHarvestBonus();
-        int[] result = randomizer.harvestWithQuality(basePrice, penalty, harvestBonus);
+        int seasonBonus = plot.getSeasonQualityBonus(); // Can be positive or negative
+        int fertilizerBonus = plot.getFertilizerQualityBonus();
+        int[] result = randomizer.harvestWithQuality(basePrice, penalty, harvestBonus + seasonBonus + fertilizerBonus);
         int finalPrice = result[0];
         int quality = result[1];
 
@@ -150,34 +173,34 @@ public class GameState {
     public Crop buySeedBox(int boxType) {
         int cost;
         int cropIndex;
-        
+
         switch (boxType) {
             case 1:
                 cost = 50;
-                cropIndex = randomizer.commonBox();
+                cropIndex = getSeasonBiasedCrop(() -> randomizer.commonBox());
                 break;
             case 2:
                 cost = 100;
-                cropIndex = randomizer.rareBox();
+                cropIndex = getSeasonBiasedCrop(() -> randomizer.rareBox());
                 break;
             case 3:
                 cost = 200;
-                cropIndex = randomizer.epicBox();
+                cropIndex = getSeasonBiasedCrop(() -> randomizer.epicBox());
                 break;
             default:
                 return null;
         }
-        
+
         coins -= cost;
-        
+
         if (cropIndex < 1 || cropIndex > cropDatabase.size()) return null;
         Crop selectedCrop = cropDatabase.get(cropIndex - 1);
-        
+
         if (selectedCrop.getStatus().equals("Not")) {
             selectedCrop.setStatus("Obtained");
             fileManager.writeCropData(cropDatabase);
         }
-        
+
         boolean found = false;
         for (Inventory item : inventory) {
             if (item.getCrop().getName().equals(selectedCrop.getName())) {
@@ -186,14 +209,38 @@ public class GameState {
                 break;
             }
         }
-        
+
         if (!found) {
-            Crop newCrop = new Crop(0, selectedCrop.getName(), selectedCrop.getRarity(), "Obtained");
+            Crop newCrop = new Crop(0, selectedCrop.getName(), selectedCrop.getRarity(), "Obtained", selectedCrop.getSeason());
             inventory.add(new Inventory(newCrop, 1));
         }
-        
+
         actionsRemaining--;
         return selectedCrop;
+    }
+
+    // Helper method to bias crop selection towards current season
+    private int getSeasonBiasedCrop(java.util.function.Supplier<Integer> boxMethod) {
+        String currentSeason = getCurrentSeason();
+        int maxAttempts = 3;
+        int cropIndex = boxMethod.get();
+
+        // 40% chance to try re-rolling for a season-matching crop
+        for (int i = 0; i < maxAttempts - 1; i++) {
+            if (cropIndex >= 1 && cropIndex <= cropDatabase.size()) {
+                Crop crop = cropDatabase.get(cropIndex - 1);
+                if (crop.getSeason().equals(currentSeason)) {
+                    break; // Already matches season, keep it
+                }
+                // 40% chance to re-roll
+                if (randomizer.nextInt(100) < 40) {
+                    cropIndex = boxMethod.get();
+                } else {
+                    break;
+                }
+            }
+        }
+        return cropIndex;
     }
     
     public void skipDay() {
@@ -287,6 +334,26 @@ public class GameState {
 
     public double getExpProgress() {
         return (double) currentExp / getExpForNextLevel();
+    }
+
+    // ==================== SEASON SYSTEM ====================
+
+    public String getCurrentSeason() {
+        // 90 days divided into 4 seasons (approximately 22-23 days each)
+        // Spring: Days 90-68, Summer: Days 67-45, Fall: Days 44-23, Winter: Days 22-1
+        if (daysRemaining >= 68) {
+            return "Spring";
+        } else if (daysRemaining >= 45) {
+            return "Summer";
+        } else if (daysRemaining >= 23) {
+            return "Fall";
+        } else {
+            return "Winter";
+        }
+    }
+
+    public boolean isCropInSeason(String cropSeason) {
+        return getCurrentSeason().equals(cropSeason);
     }
 
     // ==================== PLOT UNLOCK SYSTEM ====================
@@ -387,6 +454,46 @@ public class GameState {
 
     public boolean isHarvestMaxLevel() {
         return harvestUpgradeLevel >= 5;
+    }
+
+    // ==================== FERTILIZER SYSTEM ====================
+
+    public static final int FERTILIZER_COST = 50;
+
+    public int getFertilizerCount() {
+        return fertilizerCount;
+    }
+
+    public boolean buyFertilizer() {
+        if (coins < FERTILIZER_COST) return false;
+        coins -= FERTILIZER_COST;
+        fertilizerCount++;
+        return true;
+    }
+
+    public boolean useFertilizer(int plotIndex) {
+        if (actionsRemaining <= 0) return false;
+        if (fertilizerCount <= 0) return false;
+        if (plotIndex < 0 || plotIndex >= NUM_PLOTS) return false;
+
+        Plot plot = plots.get(plotIndex);
+        if (plot.isEmpty()) return false;
+        if (plot.isFertilized()) return false;
+
+        // Random quality boost between 10-25%
+        int qualityBoost = 10 + randomizer.nextInt(16);
+        // Random days reduction between 1-2
+        int daysReduction = 1 + randomizer.nextInt(2);
+
+        plot.applyFertilizer(qualityBoost, daysReduction);
+        fertilizerCount--;
+        actionsRemaining--;
+        return true;
+    }
+
+    public int[] getFertilizerEffectPreview() {
+        // Returns [minQuality, maxQuality, minDays, maxDays]
+        return new int[] { 10, 25, 1, 2 };
     }
 
     // ==================== CHEAT CODES (for presentation) ====================

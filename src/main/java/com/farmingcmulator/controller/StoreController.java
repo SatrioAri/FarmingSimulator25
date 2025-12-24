@@ -47,6 +47,9 @@ public class StoreController implements Initializable {
     @FXML private Label harvestUpgradeReqLabel;
     @FXML private Button harvestUpgradeBtn;
 
+    // Fertilizer elements
+    @FXML private Label fertilizerCountLabel;
+
     private GameState gameState;
     private SoundManager sound = SoundManager.getInstance();
     private int pendingBoxType;
@@ -57,6 +60,7 @@ public class StoreController implements Initializable {
         gameState = GameState.getInstance();
         updateDisplay();
         updateUpgradeDisplay();
+        updateItemsDisplay();
         hideAllPopups();
     }
 
@@ -147,6 +151,12 @@ public class StoreController implements Initializable {
                 harvestUpgradeBtn.getStyleClass().add("upgrade-btn-disabled");
                 harvestUpgradeReqLabel.setStyle("-fx-text-fill: #e74c3c;");
             }
+        }
+    }
+
+    private void updateItemsDisplay() {
+        if (fertilizerCountLabel != null) {
+            fertilizerCountLabel.setText("Owned: " + gameState.getFertilizerCount());
         }
     }
 
@@ -249,7 +259,10 @@ public class StoreController implements Initializable {
         purchaseResultLabel.setText("You got: " + crop.getName());
         purchaseResultLabel.setStyle("-fx-text-fill: " + Rarity.getColor(crop.getRarity()) + "; -fx-font-size: 26px; -fx-font-weight: bold;");
 
-        purchaseNewLabel.setText("(" + crop.getRarity() + ")");
+        String currentSeason = gameState.getCurrentSeason();
+        String cropSeason = crop.getSeason();
+        String seasonMatch = cropSeason.equals(currentSeason) ? " ✓ In Season!" : " ✗ Off Season";
+        purchaseNewLabel.setText("(" + crop.getRarity() + " | " + cropSeason + seasonMatch + ")");
         purchaseNewLabel.setStyle("-fx-text-fill: " + Rarity.getColor(crop.getRarity()) + ";");
 
         sound.playSuccess();
@@ -308,6 +321,25 @@ public class StoreController implements Initializable {
             showInfoPopup("Harvest upgraded! Bonus: +" + gameState.getHarvestBonus() + "%");
             updateDisplay();
             updateUpgradeDisplay();
+        }
+    }
+
+    // Fertilizer handler
+    @FXML
+    private void onBuyFertilizer() {
+        sound.playClick();
+
+        if (gameState.getCoins() < GameState.FERTILIZER_COST) {
+            sound.playError();
+            showInfoPopup("Not enough coins! Need " + GameState.FERTILIZER_COST + " coins.");
+            return;
+        }
+
+        if (gameState.buyFertilizer()) {
+            sound.playPurchase();
+            showInfoPopup("Fertilizer purchased! You now have " + gameState.getFertilizerCount() + " fertilizer(s).");
+            updateDisplay();
+            updateItemsDisplay();
         }
     }
 

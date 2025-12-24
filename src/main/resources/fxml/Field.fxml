@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.geometry.Insets?>
-<?import javafx.geometry.Pos?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<StackPane xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.farmingcmulator.controller.FieldController"
-           styleClass="field-bg"
-           prefWidth="1920" prefHeight="1080">
-    <ImageView fitHeight="1080.0" fitWidth="2440.0" pickOnBounds="true" preserveRatio="true">
+<StackPane prefHeight="1080" prefWidth="1920" styleClass="field-bg" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="com.farmingcmulator.controller.FieldController">
+    <ImageView fx:id="backgroundImage" fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true">
         <image>
-            <Image url="@../images/field.jpg" />
+            <Image url="@../images/field_spring.png" />
         </image>
     </ImageView>
 
@@ -29,13 +24,15 @@
 
         <!-- HEADER -->
         <top>
-            <HBox styleClass="status-bar" spacing="30" alignment="CENTER">
+            <HBox alignment="CENTER" spacing="30" styleClass="status-bar">
                 <padding>
-                    <Insets top="15" right="40" bottom="15" left="40"/>
+                    <Insets bottom="15" left="40" right="40" top="15" />
                 </padding>
-                <Label text="MY FIELD" styleClass="page-title-small"/>
-                <Region HBox.hgrow="ALWAYS"/>
-                <Label fx:id="actionsLabel" text="Actions: 10" styleClass="status-value"/>
+                <Label styleClass="page-title-small" text="MY FIELD" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="seasonLabel" styleClass="status-value" text="Spring" />
+                <Region prefWidth="20" />
+                <Label fx:id="actionsLabel" styleClass="status-value" text="Actions: 10" />
             </HBox>
         </top>
 
@@ -43,91 +40,91 @@
         <center>
             <VBox alignment="CENTER" spacing="18">
                 <padding>
-                    <Insets top="15" right="40" bottom="15" left="40"/>
+                    <Insets bottom="15" left="40" right="40" top="15" />
                 </padding>
 
                 <!-- Instruction -->
-                <Label text="Select an action, then click on a plot" styleClass="subtitle-on-bg"/>
+                <Label styleClass="subtitle-on-bg" text="Select an action, then click on a plot" />
 
                 <!-- PLOTS - Row 1 (Plot 1-5) -->
                 <HBox alignment="CENTER" spacing="12">
 
                     <!-- Plot 1 -->
-                    <StackPane fx:id="plot1Box" styleClass="plot-card" onMouseClicked="#onPlot1Clicked">
+                    <StackPane fx:id="plot1Box" onMouseClicked="#onPlot1Clicked" styleClass="plot-card">
                         <VBox alignment="CENTER" styleClass="plot-card-inner">
                             <!-- Top section: Image + Name -->
                             <VBox alignment="CENTER" spacing="4" styleClass="plot-card-top" VBox.vgrow="ALWAYS">
-                                <ImageView fx:id="plot1Image" fitWidth="64" fitHeight="64" preserveRatio="true"/>
-                                <Label fx:id="plot1Label" text="Empty" styleClass="plot-crop-name" wrapText="true"/>
+                                <ImageView fx:id="plot1Image" fitHeight="64" fitWidth="64" preserveRatio="true" />
+                                <Label fx:id="plot1Label" styleClass="plot-crop-name" text="Empty" wrapText="true" />
                             </VBox>
                             <!-- Bottom section: Water + Days -->
                             <HBox alignment="CENTER" spacing="12" styleClass="plot-card-bottom">
-                                <Label fx:id="plot1Water" text="" styleClass="plot-stat"/>
-                                <Label fx:id="plot1Days" text="" styleClass="plot-stat"/>
+                                <Label fx:id="plot1Water" styleClass="plot-stat" text="" />
+                                <Label fx:id="plot1Days" styleClass="plot-stat" text="" />
                             </HBox>
                         </VBox>
                         <!-- Plot number badge -->
-                        <Label fx:id="plot1Number" text="1" styleClass="plot-badge" StackPane.alignment="TOP_LEFT"/>
+                        <Label fx:id="plot1Number" styleClass="plot-badge" text="1" StackPane.alignment="TOP_LEFT" />
                     </StackPane>
 
                     <!-- Plot 2 -->
-                    <StackPane fx:id="plot2Box" styleClass="plot-card" onMouseClicked="#onPlot2Clicked">
+                    <StackPane fx:id="plot2Box" onMouseClicked="#onPlot2Clicked" styleClass="plot-card">
                         <VBox alignment="CENTER" styleClass="plot-card-inner">
                             <VBox alignment="CENTER" spacing="4" styleClass="plot-card-top" VBox.vgrow="ALWAYS">
-                                <ImageView fx:id="plot2Image" fitWidth="64" fitHeight="64" preserveRatio="true"/>
-                                <Label fx:id="plot2Label" text="Empty" styleClass="plot-crop-name" wrapText="true"/>
+                                <ImageView fx:id="plot2Image" fitHeight="64" fitWidth="64" preserveRatio="true" />
+                                <Label fx:id="plot2Label" styleClass="plot-crop-name" text="Empty" wrapText="true" />
                             </VBox>
                             <HBox alignment="CENTER" spacing="12" styleClass="plot-card-bottom">
-                                <Label fx:id="plot2Water" text="" styleClass="plot-stat"/>
-                                <Label fx:id="plot2Days" text="" styleClass="plot-stat"/>
+                                <Label fx:id="plot2Water" styleClass="plot-stat" text="" />
+                                <Label fx:id="plot2Days" styleClass="plot-stat" text="" />
                             </HBox>
                         </VBox>
-                        <Label fx:id="plot2Number" text="2" styleClass="plot-badge" StackPane.alignment="TOP_LEFT"/>
+                        <Label fx:id="plot2Number" styleClass="plot-badge" text="2" StackPane.alignment="TOP_LEFT" />
                     </StackPane>
 
                     <!-- Plot 3 -->
-                    <StackPane fx:id="plot3Box" styleClass="plot-card" onMouseClicked="#onPlot3Clicked">
+                    <StackPane fx:id="plot3Box" onMouseClicked="#onPlot3Clicked" styleClass="plot-card">
                         <VBox alignment="CENTER" styleClass="plot-card-inner">
                             <VBox alignment="CENTER" spacing="4" styleClass="plot-card-top" VBox.vgrow="ALWAYS">
-                                <ImageView fx:id="plot3Image" fitWidth="64" fitHeight="64" preserveRatio="true"/>
-                                <Label fx:id="plot3Label" text="Empty" styleClass="plot-crop-name" wrapText="true"/>
+                                <ImageView fx:id="plot3Image" fitHeight="64" fitWidth="64" preserveRatio="true" />
+                                <Label fx:id="plot3Label" styleClass="plot-crop-name" text="Empty" wrapText="true" />
                             </VBox>
                             <HBox alignment="CENTER" spacing="12" styleClass="plot-card-bottom">
-                                <Label fx:id="plot3Water" text="" styleClass="plot-stat"/>
-                                <Label fx:id="plot3Days" text="" styleClass="plot-stat"/>
+                                <Label fx:id="plot3Water" styleClass="plot-stat" text="" />
+                                <Label fx:id="plot3Days" styleClass="plot-stat" text="" />
                             </HBox>
                         </VBox>
-                        <Label fx:id="plot3Number" text="3" styleClass="plot-badge" StackPane.alignment="TOP_LEFT"/>
+                        <Label fx:id="plot3Number" styleClass="plot-badge" text="3" StackPane.alignment="TOP_LEFT" />
                     </StackPane>
 
                     <!-- Plot 4 -->
-                    <StackPane fx:id="plot4Box" styleClass="plot-card" onMouseClicked="#onPlot4Clicked">
+                    <StackPane fx:id="plot4Box" onMouseClicked="#onPlot4Clicked" styleClass="plot-card">
                         <VBox alignment="CENTER" styleClass="plot-card-inner">
                             <VBox alignment="CENTER" spacing="4" styleClass="plot-card-top" VBox.vgrow="ALWAYS">
-                                <ImageView fx:id="plot4Image" fitWidth="64" fitHeight="64" preserveRatio="true"/>
-                                <Label fx:id="plot4Label" text="Empty" styleClass="plot-crop-name" wrapText="true"/>
+                                <ImageView fx:id="plot4Image" fitHeight="64" fitWidth="64" preserveRatio="true" />
+                                <Label fx:id="plot4Label" styleClass="plot-crop-name" text="Empty" wrapText="true" />
                             </VBox>
                             <HBox alignment="CENTER" spacing="12" styleClass="plot-card-bottom">
-                                <Label fx:id="plot4Water" text="" styleClass="plot-stat"/>
-                                <Label fx:id="plot4Days" text="" styleClass="plot-stat"/>
+                                <Label fx:id="plot4Water" styleClass="plot-stat" text="" />
+                                <Label fx:id="plot4Days" styleClass="plot-stat" text="" />
                             </HBox>
                         </VBox>
-                        <Label fx:id="plot4Number" text="4" styleClass="plot-badge" StackPane.alignment="TOP_LEFT"/>
+                        <Label fx:id="plot4Number" styleClass="plot-badge" text="4" StackPane.alignment="TOP_LEFT" />
                     </StackPane>
 
                     <!-- Plot 5 -->
-                    <StackPane fx:id="plot5Box" styleClass="plot-card" onMouseClicked="#onPlot5Clicked">
+                    <StackPane fx:id="plot5Box" onMouseClicked="#onPlot5Clicked" styleClass="plot-card">
                         <VBox alignment="CENTER" styleClass="plot-card-inner">
                             <VBox alignment="CENTER" spacing="4" styleClass="plot-card-top" VBox.vgrow="ALWAYS">
-                                <ImageView fx:id="plot5Image" fitWidth="64" fitHeight="64" preserveRatio="true"/>
-                                <Label fx:id="plot5Label" text="Empty" styleClass="plot-crop-name" wrapText="true"/>
+                                <ImageView fx:id="plot5Image" fitHeight="64" fitWidth="64" preserveRatio="true" />
+                                <Label fx:id="plot5Label" styleClass="plot-crop-name" text="Empty" wrapText="true" />
                             </VBox>
                             <HBox alignment="CENTER" spacing="12" styleClass="plot-card-bottom">
-                                <Label fx:id="plot5Water" text="" styleClass="plot-stat"/>
-                                <Label fx:id="plot5Days" text="" styleClass="plot-stat"/>
+                                <Label fx:id="plot5Water" styleClass="plot-stat" text="" />
+                                <Label fx:id="plot5Days" styleClass="plot-stat" text="" />
                             </HBox>
                         </VBox>
-                        <Label fx:id="plot5Number" text="5" styleClass="plot-badge" StackPane.alignment="TOP_LEFT"/>
+                        <Label fx:id="plot5Number" styleClass="plot-badge" text="5" StackPane.alignment="TOP_LEFT" />
                     </StackPane>
 
                 </HBox>
@@ -136,92 +133,90 @@
                 <HBox alignment="CENTER" spacing="12">
 
                     <!-- Plot 6 -->
-                    <StackPane fx:id="plot6Box" styleClass="plot-card" onMouseClicked="#onPlot6Clicked">
+                    <StackPane fx:id="plot6Box" onMouseClicked="#onPlot6Clicked" styleClass="plot-card">
                         <VBox alignment="CENTER" styleClass="plot-card-inner">
                             <VBox alignment="CENTER" spacing="4" styleClass="plot-card-top" VBox.vgrow="ALWAYS">
-                                <ImageView fx:id="plot6Image" fitWidth="64" fitHeight="64" preserveRatio="true"/>
-                                <Label fx:id="plot6Label" text="Locked" styleClass="plot-crop-name" wrapText="true"/>
+                                <ImageView fx:id="plot6Image" fitHeight="64" fitWidth="64" preserveRatio="true" />
+                                <Label fx:id="plot6Label" styleClass="plot-crop-name" text="Locked" wrapText="true" />
                             </VBox>
                             <HBox alignment="CENTER" spacing="12" styleClass="plot-card-bottom">
-                                <Label fx:id="plot6Water" text="" styleClass="plot-stat"/>
-                                <Label fx:id="plot6Days" text="" styleClass="plot-stat"/>
+                                <Label fx:id="plot6Water" styleClass="plot-stat" text="" />
+                                <Label fx:id="plot6Days" styleClass="plot-stat" text="" />
                             </HBox>
                         </VBox>
-                        <Label fx:id="plot6Number" text="6" styleClass="plot-badge" StackPane.alignment="TOP_LEFT"/>
+                        <Label fx:id="plot6Number" styleClass="plot-badge" text="6" StackPane.alignment="TOP_LEFT" />
                     </StackPane>
 
                     <!-- Plot 7 -->
-                    <StackPane fx:id="plot7Box" styleClass="plot-card" onMouseClicked="#onPlot7Clicked">
+                    <StackPane fx:id="plot7Box" onMouseClicked="#onPlot7Clicked" styleClass="plot-card">
                         <VBox alignment="CENTER" styleClass="plot-card-inner">
                             <VBox alignment="CENTER" spacing="4" styleClass="plot-card-top" VBox.vgrow="ALWAYS">
-                                <ImageView fx:id="plot7Image" fitWidth="64" fitHeight="64" preserveRatio="true"/>
-                                <Label fx:id="plot7Label" text="Locked" styleClass="plot-crop-name" wrapText="true"/>
+                                <ImageView fx:id="plot7Image" fitHeight="64" fitWidth="64" preserveRatio="true" />
+                                <Label fx:id="plot7Label" styleClass="plot-crop-name" text="Locked" wrapText="true" />
                             </VBox>
                             <HBox alignment="CENTER" spacing="12" styleClass="plot-card-bottom">
-                                <Label fx:id="plot7Water" text="" styleClass="plot-stat"/>
-                                <Label fx:id="plot7Days" text="" styleClass="plot-stat"/>
+                                <Label fx:id="plot7Water" styleClass="plot-stat" text="" />
+                                <Label fx:id="plot7Days" styleClass="plot-stat" text="" />
                             </HBox>
                         </VBox>
-                        <Label fx:id="plot7Number" text="7" styleClass="plot-badge" StackPane.alignment="TOP_LEFT"/>
+                        <Label fx:id="plot7Number" styleClass="plot-badge" text="7" StackPane.alignment="TOP_LEFT" />
                     </StackPane>
 
                     <!-- Plot 8 -->
-                    <StackPane fx:id="plot8Box" styleClass="plot-card" onMouseClicked="#onPlot8Clicked">
+                    <StackPane fx:id="plot8Box" onMouseClicked="#onPlot8Clicked" styleClass="plot-card">
                         <VBox alignment="CENTER" styleClass="plot-card-inner">
                             <VBox alignment="CENTER" spacing="4" styleClass="plot-card-top" VBox.vgrow="ALWAYS">
-                                <ImageView fx:id="plot8Image" fitWidth="64" fitHeight="64" preserveRatio="true"/>
-                                <Label fx:id="plot8Label" text="Locked" styleClass="plot-crop-name" wrapText="true"/>
+                                <ImageView fx:id="plot8Image" fitHeight="64" fitWidth="64" preserveRatio="true" />
+                                <Label fx:id="plot8Label" styleClass="plot-crop-name" text="Locked" wrapText="true" />
                             </VBox>
                             <HBox alignment="CENTER" spacing="12" styleClass="plot-card-bottom">
-                                <Label fx:id="plot8Water" text="" styleClass="plot-stat"/>
-                                <Label fx:id="plot8Days" text="" styleClass="plot-stat"/>
+                                <Label fx:id="plot8Water" styleClass="plot-stat" text="" />
+                                <Label fx:id="plot8Days" styleClass="plot-stat" text="" />
                             </HBox>
                         </VBox>
-                        <Label fx:id="plot8Number" text="8" styleClass="plot-badge" StackPane.alignment="TOP_LEFT"/>
+                        <Label fx:id="plot8Number" styleClass="plot-badge" text="8" StackPane.alignment="TOP_LEFT" />
                     </StackPane>
 
                     <!-- Plot 9 -->
-                    <StackPane fx:id="plot9Box" styleClass="plot-card" onMouseClicked="#onPlot9Clicked">
+                    <StackPane fx:id="plot9Box" onMouseClicked="#onPlot9Clicked" styleClass="plot-card">
                         <VBox alignment="CENTER" styleClass="plot-card-inner">
                             <VBox alignment="CENTER" spacing="4" styleClass="plot-card-top" VBox.vgrow="ALWAYS">
-                                <ImageView fx:id="plot9Image" fitWidth="64" fitHeight="64" preserveRatio="true"/>
-                                <Label fx:id="plot9Label" text="Locked" styleClass="plot-crop-name" wrapText="true"/>
+                                <ImageView fx:id="plot9Image" fitHeight="64" fitWidth="64" preserveRatio="true" />
+                                <Label fx:id="plot9Label" styleClass="plot-crop-name" text="Locked" wrapText="true" />
                             </VBox>
                             <HBox alignment="CENTER" spacing="12" styleClass="plot-card-bottom">
-                                <Label fx:id="plot9Water" text="" styleClass="plot-stat"/>
-                                <Label fx:id="plot9Days" text="" styleClass="plot-stat"/>
+                                <Label fx:id="plot9Water" styleClass="plot-stat" text="" />
+                                <Label fx:id="plot9Days" styleClass="plot-stat" text="" />
                             </HBox>
                         </VBox>
-                        <Label fx:id="plot9Number" text="9" styleClass="plot-badge" StackPane.alignment="TOP_LEFT"/>
+                        <Label fx:id="plot9Number" styleClass="plot-badge" text="9" StackPane.alignment="TOP_LEFT" />
                     </StackPane>
 
                     <!-- Plot 10 -->
-                    <StackPane fx:id="plot10Box" styleClass="plot-card" onMouseClicked="#onPlot10Clicked">
+                    <StackPane fx:id="plot10Box" onMouseClicked="#onPlot10Clicked" styleClass="plot-card">
                         <VBox alignment="CENTER" styleClass="plot-card-inner">
                             <VBox alignment="CENTER" spacing="4" styleClass="plot-card-top" VBox.vgrow="ALWAYS">
-                                <ImageView fx:id="plot10Image" fitWidth="64" fitHeight="64" preserveRatio="true"/>
-                                <Label fx:id="plot10Label" text="Locked" styleClass="plot-crop-name" wrapText="true"/>
+                                <ImageView fx:id="plot10Image" fitHeight="64" fitWidth="64" preserveRatio="true" />
+                                <Label fx:id="plot10Label" styleClass="plot-crop-name" text="Locked" wrapText="true" />
                             </VBox>
                             <HBox alignment="CENTER" spacing="12" styleClass="plot-card-bottom">
-                                <Label fx:id="plot10Water" text="" styleClass="plot-stat"/>
-                                <Label fx:id="plot10Days" text="" styleClass="plot-stat"/>
+                                <Label fx:id="plot10Water" styleClass="plot-stat" text="" />
+                                <Label fx:id="plot10Days" styleClass="plot-stat" text="" />
                             </HBox>
                         </VBox>
-                        <Label fx:id="plot10Number" text="10" styleClass="plot-badge" StackPane.alignment="TOP_LEFT"/>
+                        <Label fx:id="plot10Number" styleClass="plot-badge" text="10" StackPane.alignment="TOP_LEFT" />
                     </StackPane>
 
                 </HBox>
 
-                <Region prefHeight="8"/>
+                <Region prefHeight="8" />
 
                 <!-- ACTION BUTTONS -->
-                <HBox alignment="CENTER" spacing="25">
-                    <Button fx:id="plantButton" text="PLANT" onAction="#onPlantClicked"
-                            styleClass="field-action-btn-plant" prefWidth="180" prefHeight="60"/>
-                    <Button fx:id="waterButton" text="WATER" onAction="#onWaterClicked"
-                            styleClass="field-action-btn-water" prefWidth="180" prefHeight="60"/>
-                    <Button fx:id="harvestButton" text="HARVEST" onAction="#onHarvestClicked"
-                            styleClass="field-action-btn-harvest" prefWidth="180" prefHeight="60"/>
+                <HBox alignment="CENTER" spacing="20">
+                    <Button fx:id="plantButton" onAction="#onPlantClicked" prefHeight="60" prefWidth="160" styleClass="field-action-btn-plant" text="PLANT" />
+                    <Button fx:id="waterButton" onAction="#onWaterClicked" prefHeight="60" prefWidth="160" styleClass="field-action-btn-water" text="WATER" />
+                    <Button fx:id="fertilizeButton" onAction="#onFertilizeClicked" prefHeight="60" prefWidth="160" styleClass="field-action-btn-fertilize" text="FERTILIZE" />
+                    <Button fx:id="harvestButton" onAction="#onHarvestClicked" prefHeight="60" prefWidth="160" styleClass="field-action-btn-harvest" text="HARVEST" />
                 </HBox>
 
             </VBox>
@@ -230,75 +225,75 @@
         <!-- FOOTER -->
         <bottom>
             <HBox alignment="CENTER">
-                <padding><Insets top="12" bottom="25"/></padding>
-                <Button text="BACK TO FARM" onAction="#onBackClicked" styleClass="menu-btn-back" prefWidth="200" prefHeight="45"/>
+                <padding><Insets bottom="25" top="12" /></padding>
+                <Button onAction="#onBackClicked" prefHeight="45" prefWidth="200" styleClass="menu-btn-back" text="BACK TO FARM" />
             </HBox>
         </bottom>
 
     </BorderPane>
 
     <!-- INFO POPUP -->
-    <VBox fx:id="infoPopup" styleClass="overlay-bg" alignment="CENTER" visible="false" managed="false">
-        <VBox styleClass="popup-box-small" spacing="18" maxWidth="400" minWidth="350">
-            <padding><Insets top="25" right="35" bottom="25" left="35"/></padding>
-            <Label fx:id="infoPopupLabel" text="" styleClass="popup-text-small" wrapText="true"/>
-            <Button text="OK" onAction="#onInfoPopupClose" styleClass="menu-btn-primary" prefWidth="100"/>
+    <VBox fx:id="infoPopup" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
+        <VBox maxWidth="400" minWidth="350" spacing="18" styleClass="popup-box-small">
+            <padding><Insets bottom="25" left="35" right="35" top="25" /></padding>
+            <Label fx:id="infoPopupLabel" styleClass="popup-text-small" text="" wrapText="true" />
+            <Button onAction="#onInfoPopupClose" prefWidth="100" styleClass="menu-btn-primary" text="OK" />
         </VBox>
     </VBox>
 
     <!-- INVENTORY POPUP -->
-    <VBox fx:id="inventoryPopup" styleClass="overlay-bg" alignment="CENTER" visible="false" managed="false">
-        <VBox styleClass="popup-box" spacing="20" maxWidth="450" minWidth="400">
-            <padding><Insets top="28" right="35" bottom="28" left="35"/></padding>
-            <Label text="SELECT SEED" styleClass="popup-title"/>
-            <Label text="Choose a seed from your inventory" styleClass="popup-submessage"/>
-            <ListView fx:id="inventoryListView" prefHeight="220" prefWidth="340" styleClass="inventory-list"/>
-            <HBox spacing="20" alignment="CENTER">
-                <Button text="PLANT" onAction="#onCropSelected" styleClass="menu-btn-primary" prefWidth="120" prefHeight="45"/>
-                <Button text="CANCEL" onAction="#onInventoryCancel" styleClass="menu-btn-back" prefWidth="120" prefHeight="45"/>
+    <VBox fx:id="inventoryPopup" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
+        <VBox maxWidth="450" minWidth="400" spacing="20" styleClass="popup-box">
+            <padding><Insets bottom="28" left="35" right="35" top="28" /></padding>
+            <Label styleClass="popup-title" text="SELECT SEED" />
+            <Label styleClass="popup-submessage" text="Choose a seed from your inventory" />
+            <ListView fx:id="inventoryListView" prefHeight="220" prefWidth="340" styleClass="inventory-list" />
+            <HBox alignment="CENTER" spacing="20">
+                <Button onAction="#onCropSelected" prefHeight="45" prefWidth="120" styleClass="menu-btn-primary" text="PLANT" />
+                <Button onAction="#onInventoryCancel" prefHeight="45" prefWidth="120" styleClass="menu-btn-back" text="CANCEL" />
             </HBox>
         </VBox>
     </VBox>
 
     <!-- HARVEST RESULT POPUP -->
-    <VBox fx:id="harvestResultPopup" styleClass="overlay-bg" alignment="CENTER" visible="false" managed="false">
-        <VBox styleClass="popup-box-success" spacing="18" maxWidth="480" minWidth="420">
-            <padding><Insets top="30" right="40" bottom="30" left="40"/></padding>
+    <VBox fx:id="harvestResultPopup" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
+        <VBox maxWidth="480" minWidth="420" spacing="18" styleClass="popup-box-success">
+            <padding><Insets bottom="30" left="40" right="40" top="30" /></padding>
 
-            <Label text="HARVEST SUCCESS!" styleClass="popup-title-success"/>
-            <Label fx:id="harvestCropLabel" text="Crop Name" styleClass="harvest-crop-name"/>
+            <Label styleClass="popup-title-success" text="HARVEST SUCCESS!" />
+            <Label fx:id="harvestCropLabel" styleClass="harvest-crop-name" text="Crop Name" />
 
             <!-- Quality Section -->
             <VBox alignment="CENTER" spacing="8" style="-fx-background-color: rgba(255,255,255,0.6); -fx-background-radius: 12; -fx-padding: 12;">
-                <Label text="QUALITY" styleClass="popup-label"/>
-                <ProgressBar fx:id="harvestQualityBar" progress="0.5" prefWidth="280" styleClass="quality-bar"/>
+                <Label styleClass="popup-label" text="QUALITY" />
+                <ProgressBar fx:id="harvestQualityBar" prefWidth="280" progress="0.5" styleClass="quality-bar" />
                 <HBox alignment="CENTER" spacing="15">
-                    <Label fx:id="harvestQualityLabel" text="50%" styleClass="harvest-quality"/>
-                    <Label fx:id="harvestGradeLabel" text="GOOD" styleClass="harvest-grade"/>
+                    <Label fx:id="harvestQualityLabel" styleClass="harvest-quality" text="50%" />
+                    <Label fx:id="harvestGradeLabel" styleClass="harvest-grade" text="GOOD" />
                 </HBox>
             </VBox>
 
-            <Label fx:id="harvestMessageLabel" text="Message" styleClass="harvest-message" wrapText="true"/>
+            <Label fx:id="harvestMessageLabel" styleClass="harvest-message" text="Message" wrapText="true" />
 
             <!-- Price Breakdown -->
             <VBox alignment="CENTER" spacing="6" styleClass="harvest-price-box">
-                <padding><Insets top="12" right="20" bottom="12" left="20"/></padding>
+                <padding><Insets bottom="12" left="20" right="20" top="12" /></padding>
                 <HBox alignment="CENTER" spacing="10">
-                    <Label text="Base Price:" styleClass="popup-label"/>
-                    <Label fx:id="harvestBaseLabel" text="50 coins" styleClass="harvest-price"/>
+                    <Label styleClass="popup-label" text="Base Price:" />
+                    <Label fx:id="harvestBaseLabel" styleClass="harvest-price" text="50 coins" />
                 </HBox>
                 <HBox alignment="CENTER" spacing="10">
-                    <Label text="Quality Bonus:" styleClass="popup-label"/>
-                    <Label fx:id="harvestBonusLabel" text="+25 coins" styleClass="harvest-bonus"/>
+                    <Label styleClass="popup-label" text="Quality Bonus:" />
+                    <Label fx:id="harvestBonusLabel" styleClass="harvest-bonus" text="+25 coins" />
                 </HBox>
-                <Region prefHeight="3"/>
+                <Region prefHeight="3" />
                 <HBox alignment="CENTER" spacing="10">
-                    <Label text="TOTAL:" styleClass="popup-label-bold"/>
-                    <Label fx:id="harvestTotalLabel" text="75 coins" styleClass="harvest-total"/>
+                    <Label styleClass="popup-label-bold" text="TOTAL:" />
+                    <Label fx:id="harvestTotalLabel" styleClass="harvest-total" text="75 coins" />
                 </HBox>
             </VBox>
 
-            <Button text="COLLECT" onAction="#onHarvestResultClose" styleClass="menu-btn-primary" prefWidth="160" prefHeight="45"/>
+            <Button onAction="#onHarvestResultClose" prefHeight="45" prefWidth="160" styleClass="menu-btn-primary" text="COLLECT" />
         </VBox>
     </VBox>
 

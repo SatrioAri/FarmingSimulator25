@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -17,6 +19,7 @@ import java.util.TimerTask;
 public class GameMenuController implements Initializable {
 
     @FXML private Label playerNameLabel;
+    @FXML private Label seasonLabel;
     @FXML private Label daysRemainingLabel;
     @FXML private Label coinsLabel;
     @FXML private Label actionsRemainingLabel;
@@ -35,6 +38,7 @@ public class GameMenuController implements Initializable {
     
     @FXML private VBox coinsBox;
     @FXML private VBox expBox;
+    @FXML private ImageView backgroundImage;
 
     private GameState gameState;
     private SoundManager sound = SoundManager.getInstance();
@@ -73,6 +77,11 @@ public class GameMenuController implements Initializable {
         coinsLabel.setText(String.valueOf(gameState.getCoins()));
         actionsRemainingLabel.setText(String.valueOf(gameState.getActionsRemaining()));
 
+        // Update season display
+        seasonLabel.setText(gameState.getCurrentSeason());
+        updateSeasonLabelColor();
+        updateSeasonBackground();
+
         // Update level and EXP display
         levelLabel.setText(String.valueOf(gameState.getPlayerLevel()));
         expLabel.setText(gameState.getCurrentExp() + "/" + gameState.getExpForNextLevel());
@@ -94,6 +103,40 @@ public class GameMenuController implements Initializable {
             showGameOver();
         } else if (gameState.isSeasonOver()) {
             showSeasonOver();
+        }
+    }
+
+    private void updateSeasonLabelColor() {
+        String season = gameState.getCurrentSeason();
+        String color;
+        switch (season) {
+            case "Spring":
+                color = "#FF69B4"; // Pink
+                break;
+            case "Summer":
+                color = "#FFD700"; // Gold
+                break;
+            case "Fall":
+                color = "#FF8C00"; // Dark Orange
+                break;
+            case "Winter":
+                color = "#87CEEB"; // Sky Blue
+                break;
+            default:
+                color = "#FFD966";
+        }
+        seasonLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 18px; -fx-font-weight: bold;");
+    }
+
+    private void updateSeasonBackground() {
+        String season = gameState.getCurrentSeason().toLowerCase();
+        try {
+            Image bgImage = new Image(getClass().getResourceAsStream("/images/gamemenu_" + season + ".png"));
+            if (bgImage != null && !bgImage.isError()) {
+                backgroundImage.setImage(bgImage);
+            }
+        } catch (Exception e) {
+            // Keep current background if image not found
         }
     }
     

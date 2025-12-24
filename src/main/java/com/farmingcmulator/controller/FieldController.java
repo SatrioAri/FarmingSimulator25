@@ -26,7 +26,9 @@ import java.util.ResourceBundle;
 
 public class FieldController implements Initializable {
 
+    @FXML private Label seasonLabel;
     @FXML private Label actionsLabel;
+    @FXML private ImageView backgroundImage;
 
     // Plot boxes (StackPane for layered layout with badge)
     @FXML private StackPane plot1Box, plot2Box, plot3Box, plot4Box, plot5Box;
@@ -54,6 +56,7 @@ public class FieldController implements Initializable {
 
     @FXML private Button plantButton;
     @FXML private Button waterButton;
+    @FXML private Button fertilizeButton;
     @FXML private Button harvestButton;
 
     @FXML private VBox inventoryPopup;
@@ -123,10 +126,38 @@ public class FieldController implements Initializable {
 
     private void updateDisplay() {
         actionsLabel.setText("Actions: " + gameState.getActionsRemaining());
+        seasonLabel.setText(gameState.getCurrentSeason());
+        updateSeasonLabelColor();
+        updateSeasonBackground();
 
         List<Plot> plots = gameState.getPlots();
         for (int i = 0; i < GameState.NUM_PLOTS; i++) {
             updatePlotDisplay(i, plots.get(i));
+        }
+    }
+
+    private void updateSeasonLabelColor() {
+        String season = gameState.getCurrentSeason();
+        String color;
+        switch (season) {
+            case "Spring": color = "#FF69B4"; break;
+            case "Summer": color = "#FFD700"; break;
+            case "Fall": color = "#FF8C00"; break;
+            case "Winter": color = "#87CEEB"; break;
+            default: color = "#FFD966";
+        }
+        seasonLabel.setStyle("-fx-text-fill: " + color + "; -fx-font-size: 20px; -fx-font-weight: bold;");
+    }
+
+    private void updateSeasonBackground() {
+        String season = gameState.getCurrentSeason().toLowerCase();
+        try {
+            Image bgImage = new Image(getClass().getResourceAsStream("/images/field_" + season + ".png"));
+            if (bgImage != null && !bgImage.isError()) {
+                backgroundImage.setImage(bgImage);
+            }
+        } catch (Exception e) {
+            // Keep current background if image not found
         }
     }
 
@@ -231,6 +262,12 @@ public class FieldController implements Initializable {
                 waterButton.getStyleClass().add("field-action-btn-water");
             }
         }
+        if (fertilizeButton != null) {
+            fertilizeButton.getStyleClass().removeAll("field-action-btn-fertilize-active");
+            if (!fertilizeButton.getStyleClass().contains("field-action-btn-fertilize")) {
+                fertilizeButton.getStyleClass().add("field-action-btn-fertilize");
+            }
+        }
         if (harvestButton != null) {
             harvestButton.getStyleClass().removeAll("field-action-btn-harvest-active");
             if (!harvestButton.getStyleClass().contains("field-action-btn-harvest")) {
@@ -310,6 +347,31 @@ public class FieldController implements Initializable {
                 }
                 break;
 
+            case "fertilize":
+                if (plot.isEmpty()) {
+                    showInfoPopup("This plot is empty!");
+                    return;
+                }
+                if (plot.isFertilized()) {
+                    showInfoPopup("This crop is already fertilized!");
+                    return;
+                }
+                if (gameState.getFertilizerCount() <= 0) {
+                    showInfoPopup("No fertilizer! Buy some at the store.");
+                    return;
+                }
+                if (gameState.noActionsRemaining()) {
+                    showInfoPopup("No actions remaining!");
+                    return;
+                }
+                if (gameState.useFertilizer(plotIndex)) {
+                    sound.playPlant(); // Use plant sound for fertilizing
+                    int qualityBonus = plot.getFertilizerQualityBonus();
+                    showInfoPopup("Fertilized! Quality +" + qualityBonus + "%, Days reduced!");
+                    updateDisplay();
+                }
+                break;
+
             case "harvest":
                 if (plot.isEmpty()) {
                     showInfoPopup("This plot is empty!");
@@ -369,6 +431,26 @@ public class FieldController implements Initializable {
     }
 
     @FXML
+    private void onFertilizeClicked() {
+        sound.playClick();
+        if (currentAction.equals("fertilize")) {
+            currentAction = "";
+            resetAllActionButtons();
+            return;
+        }
+
+        if (gameState.getFertilizerCount() <= 0) {
+            sound.playError();
+            showInfoPopup("No fertilizer! Buy some at the store.");
+            return;
+        }
+
+        currentAction = "fertilize";
+        resetAllActionButtons();
+        setButtonActive(fertilizeButton, "field-action-btn-fertilize", "field-action-btn-fertilize-active");
+    }
+
+    @FXML
     private void onHarvestClicked() {
         sound.playClick();
         if (currentAction.equals("harvest")) {
@@ -398,9 +480,12 @@ public class FieldController implements Initializable {
 
     private void showInventoryPopup() {
         sound.playPopup();
+        String currentSeason = gameState.getCurrentSeason();
         List<String> items = new ArrayList<>();
         for (Inventory inv : gameState.getInventory()) {
-            items.add(inv.getCrop().getName() + " (" + inv.getCrop().getRarity() + ") x" + inv.getQuantity());
+            String cropSeason = inv.getCrop().getSeason();
+            String seasonIndicator = cropSeason.equals(currentSeason) ? " ✓" : " ✗";
+            items.add(inv.getCrop().getName() + " (" + inv.getCrop().getRarity() + ", " + cropSeason + seasonIndicator + ") x" + inv.getQuantity());
         }
 
         inventoryListView.getItems().clear();

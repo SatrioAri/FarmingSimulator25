@@ -1,73 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<StackPane xmlns:fx="http://javafx.com/fxml/1" 
-           fx:controller="com.farmingcmulator.controller.EnterNameController"
-           styleClass="enter-name-bg"
-           prefWidth="1920" prefHeight="1080">
-    <ImageView fitHeight="1080.0" fitWidth="2440.0" pickOnBounds="true" preserveRatio="true">
+<StackPane prefHeight="1080" prefWidth="1920" styleClass="enter-name-bg" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="com.farmingcmulator.controller.EnterNameController">
+    <ImageView fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true">
         <image>
-            <Image url="@../images/mainmenu.jpg" />
+            <Image url="@../images/mainmenu.png" />
         </image>
     </ImageView>
     
     <VBox alignment="CENTER" spacing="30">
         <padding>
-            <Insets top="50" right="80" bottom="50" left="80"/>
+            <Insets bottom="50" left="80" right="80" top="50" />
         </padding>
         
         <!-- Header -->
         <VBox alignment="CENTER" spacing="8">
-            <Label text="NEW ADVENTURE" styleClass="page-title"/>
-            <Label text="Your farming journey begins here" styleClass="subtitle-on-bg"/>
+            <Label styleClass="page-title" text="NEW ADVENTURE" />
+            <Label styleClass="subtitle-on-bg" text="Your farming journey begins here" />
         </VBox>
         
-        <Region prefHeight="10"/>
+        <Region prefHeight="10" />
         
         <!-- Form Card -->
-        <VBox alignment="CENTER" spacing="25" styleClass="form-box" maxWidth="480">
+        <VBox alignment="CENTER" maxWidth="480" spacing="25" styleClass="form-box">
             <padding>
-                <Insets top="35" right="45" bottom="35" left="45"/>
+                <Insets bottom="35" left="45" right="45" top="35" />
             </padding>
             
-            <Label text="What's your name, farmer?" styleClass="form-label"/>
+            <Label styleClass="form-label" text="What's your name, farmer?" />
             
-            <TextField fx:id="nameField" 
-                       promptText="Enter your name..." 
-                       styleClass="name-input" 
-                       maxWidth="340"
-                       alignment="CENTER"/>
+            <TextField fx:id="nameField" alignment="CENTER" maxWidth="340" promptText="Enter your name..." styleClass="name-input" />
             
-            <Label fx:id="errorLabel" text="" styleClass="error-label" visible="false"/>
+            <Label fx:id="errorLabel" styleClass="error-label" text="" visible="false" />
             
-            <Region prefHeight="5"/>
+            <Region prefHeight="5" />
             
             <!-- Buttons -->
             <HBox alignment="CENTER" spacing="20">
-                <Button text="BEGIN" onAction="#onStartClicked" 
-                        styleClass="menu-btn-primary" prefWidth="140" prefHeight="50"/>
-                <Button text="BACK" onAction="#onBackClicked" 
-                        styleClass="menu-btn-back" prefWidth="140" prefHeight="50"/>
+                <Button onAction="#onStartClicked" prefHeight="50" prefWidth="140" styleClass="menu-btn-primary" text="BEGIN" />
+                <Button onAction="#onBackClicked" prefHeight="50" prefWidth="140" styleClass="menu-btn-back" text="BACK" />
             </HBox>
             
         </VBox>
         
-        <Region prefHeight="15"/>
+        <Region prefHeight="15" />
         
         <!-- Hint -->
         <VBox alignment="CENTER" spacing="3">
-            <Label text="Tip: Choose a memorable name!" styleClass="subtitle-on-bg"/>
-            <Label text="Your name will appear on the highscore board." style="-fx-font-size: 13px; -fx-text-fill: #FFFFFF; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 3, 0.5, 0, 1);"/>
+            <Label styleClass="subtitle-on-bg" text="Tip: Choose a memorable name!" />
+            <Label style="-fx-font-size: 13px; -fx-text-fill: #FFFFFF; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.7), 3, 0.5, 0, 1);" text="Your name will appear on the highscore board." />
         </VBox>
         
     </VBox>
