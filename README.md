@@ -289,7 +289,7 @@ FarmingCmulator/
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/FarmingCmulator.git
+git clone https://github.com/satrioari/FarmingCmulator.git
 
 # Navigate to project directory
 cd FarmingCmulator
