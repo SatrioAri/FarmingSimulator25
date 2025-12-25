@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -13,7 +15,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane prefHeight="1080" prefWidth="1920" styleClass="field-bg" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="com.farmingcmulator.controller.FieldController">
+<StackPane prefHeight="1080" prefWidth="1920" styleClass="field-bg" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.farmingcmulator.controller.FieldController">
     <ImageView fx:id="backgroundImage" fitHeight="1080.0" fitWidth="1920.0" pickOnBounds="true">
         <image>
             <Image url="@../images/field_spring.png" />
@@ -45,6 +47,42 @@
 
                 <!-- Instruction -->
                 <Label styleClass="subtitle-on-bg" text="Select an action, then click on a plot" />
+
+                <!-- MARKET TRENDS PANEL -->
+                <HBox alignment="CENTER" spacing="20">
+                    <VBox alignment="CENTER" spacing="8" styleClass="market-panel">
+                        <padding><Insets bottom="12" left="20" right="20" top="12" /></padding>
+
+                        <HBox alignment="CENTER" spacing="15">
+                            <Label styleClass="market-title" text="MARKET TRENDS" />
+                            <Label fx:id="priceUpdateLabel" styleClass="market-update" text="Updates in: 3 days" />
+                        </HBox>
+
+                        <HBox alignment="CENTER" spacing="30">
+                            <!-- HIGH DEMAND Column -->
+                            <VBox alignment="CENTER" spacing="4">
+                                <Label styleClass="market-subtitle-good" text="HIGH DEMAND" />
+                                <VBox alignment="CENTER_LEFT" spacing="2" styleClass="market-list">
+                                    <Label fx:id="goodPrice1" styleClass="market-item-good" text="Loading..." />
+                                    <Label fx:id="goodPrice2" styleClass="market-item-good" text="Loading..." />
+                                    <Label fx:id="goodPrice3" styleClass="market-item-good" text="Loading..." />
+                                </VBox>
+                            </VBox>
+
+                            <!-- LOW DEMAND Column -->
+                            <VBox alignment="CENTER" spacing="4">
+                                <Label styleClass="market-subtitle-bad" text="LOW DEMAND" />
+                                <VBox alignment="CENTER_LEFT" spacing="2" styleClass="market-list">
+                                    <Label fx:id="badPrice1" styleClass="market-item-bad" text="Loading..." />
+                                    <Label fx:id="badPrice2" styleClass="market-item-bad" text="Loading..." />
+                                    <Label fx:id="badPrice3" styleClass="market-item-bad" text="Loading..." />
+                                </VBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+                </HBox>
+
+                <Region prefHeight="4" />
 
                 <!-- PLOTS - Row 1 (Plot 1-5) -->
                 <HBox alignment="CENTER" spacing="12">
@@ -230,7 +268,60 @@
             </HBox>
         </bottom>
 
+        <!-- STORAGE SIDEBAR -->
+        <right>
+            <VBox fx:id="storagePanel" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="375.0" spacing="12" styleClass="storage-panel" BorderPane.alignment="CENTER_RIGHT">
+                <padding><Insets bottom="20" left="15" right="20" top="20" /></padding>
+
+                <!-- Storage Header -->
+                <HBox alignment="CENTER" spacing="10">
+                    <Label styleClass="storage-title" text="STORAGE" />
+                    <Label fx:id="storageCapacityLabel" styleClass="storage-capacity" text="0/10" />
+                </HBox>
+
+                <!-- Storage Table -->
+                <TableView fx:id="storageTable" prefHeight="340" prefWidth="340" styleClass="storage-table">
+                    <columns>
+                        <TableColumn fx:id="storageCropColumn" prefWidth="110" text="Crop" />
+                        <TableColumn fx:id="storageQtyColumn" prefWidth="40" text="Qty" />
+                        <TableColumn fx:id="storageQualityColumn" prefWidth="60" text="Qlty" />
+                        <TableColumn fx:id="storagePriceColumn" prefWidth="90" text="Value" />
+                    </columns>
+                    <placeholder>
+                        <Label styleClass="storage-empty" text="No crops stored" />
+                    </placeholder>
+                </TableView>
+
+                <!-- Decay Warning -->
+                <VBox fx:id="decayWarningBox" alignment="CENTER" spacing="4" styleClass="storage-warning-box" managed="false" visible="false">
+                    <Label styleClass="storage-warning-title" text="QUALITY DECAY WARNING" />
+                    <Label fx:id="decayWarningLabel" styleClass="storage-warning-text" text="" wrapText="true" />
+                </VBox>
+
+                <!-- Sell Buttons -->
+                <HBox alignment="CENTER" spacing="10">
+                    <Button fx:id="sellButton" onAction="#onSellClicked" prefHeight="40" prefWidth="140" styleClass="storage-btn-sell" text="SELL" />
+                    <Button fx:id="sellAllButton" onAction="#onSellAllClicked" prefHeight="40" prefWidth="140" styleClass="storage-btn-sell-all" text="SELL ALL" />
+                </HBox>
+
+                <!-- Total Value -->
+                <Label fx:id="storageTotalLabel" styleClass="storage-total" text="Total Value: 0 coins" />
+            </VBox>
+        </right>
+
     </BorderPane>
+
+    <!-- PEST INVASION POPUP -->
+    <VBox fx:id="pestPopup" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">
+        <VBox maxWidth="450" minWidth="400" spacing="18" styleClass="popup-box-pest">
+            <padding><Insets bottom="28" left="38" right="38" top="28" /></padding>
+            <Label styleClass="pest-popup-title" text="PEST INVASION!" />
+            <Label styleClass="pest-popup-icon" text="🐛" />
+            <Label fx:id="pestPopupLabel" styleClass="pest-popup-text" text="" wrapText="true" />
+            <Label styleClass="pest-popup-hint" text="Fertilized crops have lower pest risk!" />
+            <Button onAction="#onPestPopupClose" prefWidth="120" styleClass="menu-btn-primary" text="OK" />
+        </VBox>
+    </VBox>
 
     <!-- INFO POPUP -->
     <VBox fx:id="infoPopup" alignment="CENTER" managed="false" styleClass="overlay-bg" visible="false">

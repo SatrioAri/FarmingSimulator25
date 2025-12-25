@@ -47,6 +47,14 @@ public class StoreController implements Initializable {
     @FXML private Label harvestUpgradeReqLabel;
     @FXML private Button harvestUpgradeBtn;
 
+    // Storage Upgrade elements
+    @FXML private VBox storageUpgradeCard;
+    @FXML private Label storageUpgradeLevelLabel;
+    @FXML private Label storageUpgradeEffectLabel;
+    @FXML private Label storageUpgradeCostLabel;
+    @FXML private Label storageUpgradeReqLabel;
+    @FXML private Button storageUpgradeBtn;
+
     // Fertilizer elements
     @FXML private Label fertilizerCountLabel;
 
@@ -150,6 +158,45 @@ public class StoreController implements Initializable {
                 harvestUpgradeBtn.getStyleClass().removeAll("upgrade-btn");
                 harvestUpgradeBtn.getStyleClass().add("upgrade-btn-disabled");
                 harvestUpgradeReqLabel.setStyle("-fx-text-fill: #e74c3c;");
+            }
+        }
+
+        // Storage Upgrade
+        if (storageUpgradeCard != null && storageUpgradeBtn != null) {
+            int storageLevel = gameState.getStorageUpgradeLevel();
+            int storageCapacity = gameState.getStorageCapacity();
+            boolean storageMaxed = gameState.isStorageMaxLevel();
+
+            storageUpgradeLevelLabel.setText("Level " + storageLevel + "/2");
+            storageUpgradeEffectLabel.setText("Capacity: " + storageCapacity);
+
+            if (storageMaxed) {
+                storageUpgradeCostLabel.setText("MAX LEVEL");
+                storageUpgradeReqLabel.setText("");
+                storageUpgradeBtn.setText("MAXED");
+                storageUpgradeBtn.setDisable(true);
+                storageUpgradeBtn.getStyleClass().removeAll("upgrade-btn");
+                storageUpgradeBtn.getStyleClass().add("upgrade-btn-disabled");
+                storageUpgradeCard.getStyleClass().add("upgrade-maxed");
+            } else {
+                int cost = gameState.getStorageUpgradeCost();
+                int reqLevel = gameState.getStorageUpgradeRequiredLevel();
+                storageUpgradeCostLabel.setText(cost + " coins");
+                storageUpgradeReqLabel.setText("Requires Lv." + reqLevel);
+
+                if (gameState.canUpgradeStorage()) {
+                    storageUpgradeBtn.setDisable(false);
+                    storageUpgradeBtn.getStyleClass().removeAll("upgrade-btn-disabled");
+                    if (!storageUpgradeBtn.getStyleClass().contains("upgrade-btn")) {
+                        storageUpgradeBtn.getStyleClass().add("upgrade-btn");
+                    }
+                    storageUpgradeReqLabel.setStyle("-fx-text-fill: #27ae60;");
+                } else {
+                    storageUpgradeBtn.setDisable(true);
+                    storageUpgradeBtn.getStyleClass().removeAll("upgrade-btn");
+                    storageUpgradeBtn.getStyleClass().add("upgrade-btn-disabled");
+                    storageUpgradeReqLabel.setStyle("-fx-text-fill: #e74c3c;");
+                }
             }
         }
     }
@@ -319,6 +366,30 @@ public class StoreController implements Initializable {
             sound.playPurchase();
             sound.playSuccess();
             showInfoPopup("Harvest upgraded! Bonus: +" + gameState.getHarvestBonus() + "%");
+            updateDisplay();
+            updateUpgradeDisplay();
+        }
+    }
+
+    @FXML
+    private void onStorageUpgrade() {
+        sound.playClick();
+
+        if (!gameState.canUpgradeStorage()) {
+            if (gameState.isStorageMaxLevel()) {
+                showInfoPopup("Storage upgrade is already at max level!");
+            } else if (gameState.getPlayerLevel() < gameState.getStorageUpgradeRequiredLevel()) {
+                showInfoPopup("You need to be Level " + gameState.getStorageUpgradeRequiredLevel() + " to upgrade!");
+            } else {
+                showInfoPopup("Not enough coins! Need " + gameState.getStorageUpgradeCost() + " coins.");
+            }
+            return;
+        }
+
+        if (gameState.purchaseStorageUpgrade()) {
+            sound.playPurchase();
+            sound.playSuccess();
+            showInfoPopup("Storage upgraded! Capacity: " + gameState.getStorageCapacity() + " slots");
             updateDisplay();
             updateUpgradeDisplay();
         }

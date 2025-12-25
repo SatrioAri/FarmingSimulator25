@@ -34,6 +34,9 @@ This project demonstrates object-oriented programming principles, MVC architectu
 - **Quality RNG** - Harvest quality affects final selling price (0-100%)
 - **90-Day Season Cycle** - Four seasons with dynamic backgrounds and crop bonuses
 - **Action Points** - 10 daily actions force meaningful strategic decisions
+- **Market Price Fluctuation** - Crop prices change every 3 days, encouraging strategic selling
+- **Storage System** - Store harvested crops and sell when prices are better
+- **Pest Invasion Events** - Random pest attacks can damage crop quality
 
 ### Crop System
 - **48 Unique Crops** across 5 rarity tiers
@@ -47,6 +50,7 @@ This project demonstrates object-oriented programming principles, MVC architectu
 - **Plot Unlocks** - Unlock new plots at levels 5, 10, 15, 20, 25, 30, 35, 40, 45
 - **Water Capacity Upgrades** - Increase how long crops stay watered (2 tiers)
 - **Harvest Quality Upgrades** - Boost base harvest quality (5 tiers)
+- **Storage Capacity Upgrades** - Increase storage slots from 10 to 20 (2 tiers)
 - **Fertilizer** - Consumable item for +10-25% quality and faster growth
 
 ### Database & Progression
@@ -65,10 +69,10 @@ Earn as many coins as possible within 90 days by growing and selling crops. Avoi
 ### Game Flow
 
 ```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│   STORE     │────▶│   FIELD     │────▶│   WATER     │────▶│  HARVEST    │
-│  Buy Seeds  │     │ Plant Crops │     │   Daily     │     │ Sell Crops  │
-└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   STORE     │────▶│   FIELD     │────▶│   WATER     │────▶│  HARVEST    │────▶│   STORAGE   │
+│  Buy Seeds  │     │ Plant Crops │     │   Daily     │     │ To Storage  │     │ Sell Crops  │
+└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
 ```
 
 ### Actions
@@ -78,7 +82,8 @@ Earn as many coins as possible within 90 days by growing and selling crops. Avoi
 | **Buy Seed Box** | 1 action + coins | Purchase random seeds from store |
 | **Plant** | 1 action | Plant a seed from inventory to empty plot |
 | **Water** | 1 action | Water a growing crop (required daily) |
-| **Harvest** | 1 action | Collect ready crops and earn coins |
+| **Harvest** | 1 action | Collect ready crops to storage |
+| **Sell from Storage** | Free | Sell stored crops at current market prices |
 | **Use Fertilizer** | 1 action | Apply fertilizer to boost crop quality |
 | **Skip Day** | Free | End current day and start next |
 
@@ -143,12 +148,69 @@ The 90-day game is divided into 4 seasons with dynamic visual themes:
 | Tier 4 | 350 coins | Level 12 | +2% |
 | Tier 5 | 500 coins | Level 15 | +2% |
 
+**Storage Capacity** (crop storage slots):
+| Tier | Cost | Level Required | Capacity |
+|------|------|----------------|----------|
+| Base | - | - | 10 slots |
+| Tier 1 | 500 coins | Level 10 | 15 slots |
+| Tier 2 | 800 coins | Level 15 | 20 slots |
+
 ### Quality & Profit
 
 - Harvest quality ranges from 0-100%
 - Quality penalty: -10% per day crop goes unwatered
-- Final sale price: `Base Price + (Base Price × Quality%)`
+- Final sale price: `Base Price × Market Multiplier + (Adjusted Base × Quality%)`
 - Season bonus/penalty affects final quality
+
+### Market Price Fluctuation
+
+Crop prices fluctuate dynamically based on market demand:
+
+- **Update Frequency**: Prices change every 3 days
+- **Price Range**: 0.9x - 1.1x base price (±10% swing)
+- **Seasonal Bonus**: In-season crops get additional +5% to +10% price bonus
+- **Market Trends Panel**: Displays in the Field screen showing:
+  - 3 crops with HIGH DEMAND (best prices)
+  - 3 crops with LOW DEMAND (worst prices)
+  - Countdown to next price update
+
+**Strategy**: Check market trends before harvesting! Wait for good prices on your crops, or harvest immediately if prices are about to change.
+
+### Storage System
+
+Harvested crops are stored in your barn instead of being sold immediately. This allows strategic selling when market prices are favorable.
+
+- **Storage Capacity**: 10 slots base, upgradeable to 20
+- **Free Selling**: Selling from storage costs no action points
+- **Stacking**: Same crop types stack together with averaged quality
+- **Quality Decay**: Stored crops lose 10% quality every 5 days if not sold
+- **Decay Warning**: Visual warning when crops are within 2 days of decay
+
+| Feature | Details |
+|---------|---------|
+| Base Capacity | 10 unique crop slots |
+| Max Capacity | 20 slots (with upgrades) |
+| Sell Cost | Free (no action required) |
+| Decay Rate | -10% quality every 5 days |
+
+**Strategy**: Store high-value crops and wait for high demand prices, but don't wait too long or quality will decay!
+
+### Pest Invasion Events
+
+Random pest attacks can damage your growing crops, reducing their quality.
+
+- **Random Target**: One growing crop is randomly selected each day
+- **Invasion Chance**: 15% for normal crops, 5% for fertilized crops
+- **Quality Damage**: Random 1-10% quality reduction
+- **Notification**: Popup alert when entering Field after an attack
+- **Protection**: Fertilized crops have 3x lower chance of pest invasion
+
+| Crop Type | Pest Chance | Damage Range |
+|-----------|-------------|--------------|
+| Normal | 15% | 1-10% quality loss |
+| Fertilized | 5% | 1-10% quality loss |
+
+**Strategy**: Use fertilizer not just for quality boost, but also for pest protection on valuable crops!
 
 ### Tips & Strategy
 
@@ -159,6 +221,9 @@ The 90-day game is divided into 4 seasons with dynamic visual themes:
 5. **Level Up**: Focus on harvests to gain EXP and unlock more plots
 6. **Upgrade Early**: Water capacity upgrades give more flexibility
 7. **Risk vs Reward**: Epic Boxes cost more but have better legendary chances
+8. **Watch the Market**: Check the Market Trends panel and harvest when your crops have high demand
+9. **Strategic Storage**: Hold crops in storage until market prices peak, but watch for decay warnings
+10. **Fertilize Valuables**: Use fertilizer on Epic/Legendary crops for pest protection and quality boost
 
 ---
 
@@ -190,7 +255,9 @@ FarmingCmulator/
     │   │   ├── Plot.java                # Farm plot state
     │   │   ├── Inventory.java           # Seed inventory wrapper
     │   │   ├── Highscore.java           # Score record
-    │   │   └── Rarity.java              # Rarity tier definitions
+    │   │   ├── Rarity.java              # Rarity tier definitions
+    │   │   ├── MarketPrice.java         # Market price fluctuation data
+    │   │   └── StorageItem.java         # Stored crop data with decay tracking
     │   │
     │   └── util/                        # Utilities
     │       ├── FileManager.java         # Save/load persistence
@@ -273,6 +340,6 @@ copies or substantial portions of the Software.
 
 **Made with Java and JavaFX**
 
-*Version 2.0*
+*Version 3.0*
 
 </div>

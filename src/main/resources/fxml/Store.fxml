@@ -163,20 +163,40 @@
                             <Button fx:id="harvestUpgradeBtn" onAction="#onHarvestUpgrade" prefWidth="100" styleClass="upgrade-btn" text="UPGRADE" />
                         </VBox>
 
+                        <!-- STORAGE UPGRADE -->
+                        <VBox fx:id="storageUpgradeCard" alignment="CENTER" prefWidth="180" spacing="8" styleClass="upgrade-card, upgrade-card-storage">
+                            <padding><Insets bottom="18" left="20" right="20" top="18" /></padding>
+                            <ImageView fitHeight="52" fitWidth="52" preserveRatio="true">
+                                <image><Image url="@../images/store/upgrade_storage.png" /></image>
+                            </ImageView>
+                            <Label style="-fx-text-fill: #e67e22;" styleClass="upgrade-title" text="STORAGE" />
+                            <Label fx:id="storageUpgradeLevelLabel" styleClass="upgrade-level" text="Level 0/2" />
+                            <Label fx:id="storageUpgradeEffectLabel" style="-fx-text-fill: #e67e22;" styleClass="upgrade-effect" text="Capacity: 10" />
+                            <Region prefHeight="3" />
+                            <Label fx:id="storageUpgradeCostLabel" styleClass="upgrade-cost" text="500 coins" />
+                            <Label fx:id="storageUpgradeReqLabel" styleClass="upgrade-req" text="Requires Lv.10" />
+                            <Button fx:id="storageUpgradeBtn" onAction="#onStorageUpgrade" prefWidth="100" styleClass="upgrade-btn" text="UPGRADE" />
+                        </VBox>
+
                     </HBox>
 
                     <Region prefHeight="12" />
 
                     <!-- Upgrade Info -->
-                    <HBox alignment="CENTER" spacing="25" style="-fx-background-color: rgba(0,0,0,0.4); -fx-background-radius: 12; -fx-padding: 12 25;">
+                    <HBox alignment="CENTER" spacing="20" style="-fx-background-color: rgba(0,0,0,0.4); -fx-background-radius: 12; -fx-padding: 12 20;">
                         <VBox alignment="CENTER" spacing="2">
-                            <Label style="-fx-text-fill: #3498db; -fx-font-size: 13px; -fx-font-weight: bold;" text="Water" />
-                            <Label style="-fx-text-fill: #CCCCCC; -fx-font-size: 11px;" text="+1 capacity per level" />
+                            <Label style="-fx-text-fill: #3498db; -fx-font-size: 12px; -fx-font-weight: bold;" text="Water" />
+                            <Label style="-fx-text-fill: #CCCCCC; -fx-font-size: 10px;" text="+1 capacity/lvl" />
                         </VBox>
-                        <Label style="-fx-text-fill: rgba(255,255,255,0.3); -fx-font-size: 20px;" text="|" />
+                        <Label style="-fx-text-fill: rgba(255,255,255,0.3); -fx-font-size: 18px;" text="|" />
                         <VBox alignment="CENTER" spacing="2">
-                            <Label style="-fx-text-fill: #27ae60; -fx-font-size: 13px; -fx-font-weight: bold;" text="Harvest" />
-                            <Label style="-fx-text-fill: #CCCCCC; -fx-font-size: 11px;" text="+2% bonus per level" />
+                            <Label style="-fx-text-fill: #27ae60; -fx-font-size: 12px; -fx-font-weight: bold;" text="Harvest" />
+                            <Label style="-fx-text-fill: #CCCCCC; -fx-font-size: 10px;" text="+2% bonus/lvl" />
+                        </VBox>
+                        <Label style="-fx-text-fill: rgba(255,255,255,0.3); -fx-font-size: 18px;" text="|" />
+                        <VBox alignment="CENTER" spacing="2">
+                            <Label style="-fx-text-fill: #e67e22; -fx-font-size: 12px; -fx-font-weight: bold;" text="Storage" />
+                            <Label style="-fx-text-fill: #CCCCCC; -fx-font-size: 10px;" text="+5 slots/lvl" />
                         </VBox>
                     </HBox>
 
@@ -196,7 +216,9 @@
                     <!-- Fertilizer Card -->
                     <VBox alignment="CENTER" prefWidth="180" spacing="8" styleClass="upgrade-card" style="-fx-border-color: #8B4513; -fx-border-width: 2;">
                         <padding><Insets bottom="18" left="20" right="20" top="18" /></padding>
-                        <Label style="-fx-font-size: 32px;" text="🌱" />
+                        <ImageView fitHeight="52" fitWidth="52" preserveRatio="true">
+                            <image><Image url="@../images/store/upgrade_fertilizer.png" /></image>
+                        </ImageView>
                         <Label style="-fx-text-fill: #8B4513; -fx-font-family: 'Georgia'; -fx-font-size: 16px; -fx-font-weight: bold;" text="FERTILIZER" />
                         <Label fx:id="fertilizerCountLabel" styleClass="upgrade-level" text="Owned: 0" />
                         <VBox alignment="CENTER" spacing="2">

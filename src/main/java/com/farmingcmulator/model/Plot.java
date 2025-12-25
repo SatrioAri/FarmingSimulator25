@@ -12,6 +12,7 @@ public class Plot {
     private int seasonQualityBonus; // Positive if in-season, negative if off-season
     private boolean fertilized;
     private int fertilizerQualityBonus;
+    private int pestDamage;  // Damage from pest invasion (0 if no pest)
 
     public Plot(int number) {
         this.number = number;
@@ -25,6 +26,7 @@ public class Plot {
         this.seasonQualityBonus = 0;
         this.fertilized = false;
         this.fertilizerQualityBonus = 0;
+        this.pestDamage = 0;
     }
 
     public void plant(String cropName, String cropRarity, String cropSeason, int water, int days, int seasonQualityBonus) {
@@ -38,6 +40,7 @@ public class Plot {
         this.seasonQualityBonus = seasonQualityBonus;
         this.fertilized = false;
         this.fertilizerQualityBonus = 0;
+        this.pestDamage = 0;
     }
 
     // Backward compatibility
@@ -64,6 +67,7 @@ public class Plot {
         this.seasonQualityBonus = 0;
         this.fertilized = false;
         this.fertilizerQualityBonus = 0;
+        this.pestDamage = 0;
     }
 
     public void applyFertilizer(int qualityBoost, int daysReduction) {
@@ -121,5 +125,23 @@ public class Plot {
 
     public String getRarityColor() {
         return Rarity.getColor(cropRarity);
+    }
+
+    // Pest invasion methods
+    public void applyPestDamage(int damage) {
+        this.pestDamage = damage;
+        this.qualityPenalty += damage;  // Add to quality penalty
+    }
+
+    public int getPestDamage() {
+        return pestDamage;
+    }
+
+    public boolean wasPestInfested() {
+        return pestDamage > 0;
+    }
+
+    public void clearPestStatus() {
+        this.pestDamage = 0;
     }
 }

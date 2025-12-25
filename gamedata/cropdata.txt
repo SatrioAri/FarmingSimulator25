@@ -1,6 +1,6 @@
 1,Wheat,Common,Obtained,Fall
-2,Corn,Common,Not,Summer
-3,Carrot,Common,Not,Fall
+2,Corn,Common,Obtained,Summer
+3,Carrot,Common,Obtained,Fall
 4,Potato,Common,Not,Fall
 5,Tomato,Common,Not,Summer
 6,Lettuce,Common,Obtained,Spring
@@ -41,7 +41,7 @@
 41,Dragon Fruit,Epic,Obtained,Summer
 42,Starfruit,Epic,Obtained,Summer
 43,Passion Fruit,Epic,Obtained,Spring
-44,Durian,Epic,Not,Summer
+44,Durian,Epic,Obtained,Summer
 45,Jackfruit,Epic,Obtained,Summer
 46,Rambutan,Epic,Obtained,Summer
 47,Golden Apple,Legendary,Obtained,Fall

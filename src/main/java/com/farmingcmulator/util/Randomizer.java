@@ -76,4 +76,24 @@ public class Randomizer {
         if (quality >= 25) return "Could be better...";
         return "Not your best work...";
     }
+
+    // ==================== MARKET PRICE SYSTEM ====================
+
+    /**
+     * Generate a random price multiplier for market fluctuation.
+     * Low volatility: 0.9x to 1.1x (+-10% swing)
+     * @return multiplier between 0.9 and 1.1
+     */
+    public double generatePriceMultiplier() {
+        return 0.9 + (random.nextDouble() * 0.2);
+    }
+
+    /**
+     * Generate seasonal bonus for crops matching current season.
+     * Adds +5% to +10% bonus for in-season crops.
+     * @return bonus between 0.05 and 0.10
+     */
+    public double generateSeasonalBonus() {
+        return 0.05 + (random.nextDouble() * 0.05);
+    }
 }

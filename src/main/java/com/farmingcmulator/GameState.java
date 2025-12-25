@@ -9,7 +9,14 @@ import com.farmingcmulator.util.FileManager;
 import com.farmingcmulator.util.Randomizer;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.farmingcmulator.model.MarketPrice;
+import com.farmingcmulator.model.StorageItem;
 
 public class GameState {
     
@@ -42,10 +49,22 @@ public class GameState {
     private List<Inventory> inventory;
     private List<Crop> cropDatabase;
     private List<Highscore> highscores;
-    
+
     private FileManager fileManager;
     private Randomizer randomizer;
-    
+
+    // Market price system
+    private Map<String, MarketPrice> marketPrices;
+    private int lastPriceUpdateDay;
+    public static final int PRICE_UPDATE_INTERVAL = 3;
+
+    // Storage system
+    private List<StorageItem> storage;
+    private int storageUpgradeLevel;
+    public static final int BASE_STORAGE_CAPACITY = 10;
+    public static final int STORAGE_UPGRADE_SLOTS = 5;
+    public static final int MAX_STORAGE_UPGRADES = 2;
+
     private GameState() {
         fileManager = new FileManager();
         randomizer = new Randomizer();
@@ -87,6 +106,15 @@ public class GameState {
         inventory.clear();
         cropDatabase = fileManager.readCropData();
         highscores = fileManager.readHighscores();
+
+        // Initialize market prices
+        marketPrices = new HashMap<>();
+        lastPriceUpdateDay = SEASON_DAYS;
+        initializeMarketPrices();
+
+        // Initialize storage
+        storage = new ArrayList<>();
+        storageUpgradeLevel = 0;
     }
     
     public boolean plantCrop(int plotIndex, Inventory selectedItem) {
@@ -142,23 +170,26 @@ public class GameState {
     public int[] harvestCrop(int plotIndex) {
         if (actionsRemaining <= 0) return null;
         if (plotIndex < 0 || plotIndex >= NUM_PLOTS) return null;
+        if (isStorageFull()) return null;  // Check storage capacity
 
         Plot plot = plots.get(plotIndex);
         if (!plot.isReadyToHarvest()) return null;
 
-        Rarity rarity = Rarity.getRarityByName(plot.getCropRarity());
+        String cropName = plot.getCropName();
+        String cropRarity = plot.getCropRarity();
+        Rarity rarity = Rarity.getRarityByName(cropRarity);
         int basePrice = rarity.getSellValue();
 
         // Get quality with penalty, harvest bonus, season bonus, and fertilizer bonus
         int penalty = plot.getQualityPenalty();
         int harvestBonus = getHarvestBonus();
-        int seasonBonus = plot.getSeasonQualityBonus(); // Can be positive or negative
+        int seasonBonus = plot.getSeasonQualityBonus();
         int fertilizerBonus = plot.getFertilizerQualityBonus();
         int[] result = randomizer.harvestWithQuality(basePrice, penalty, harvestBonus + seasonBonus + fertilizerBonus);
-        int finalPrice = result[0];
         int quality = result[1];
 
-        coins += finalPrice;
+        // Store the harvested crop instead of selling immediately
+        storeHarvest(cropName, cropRarity, quality, basePrice);
 
         // Calculate and add EXP
         int expGained = (int) Math.round((quality / 100.0) * basePrice);
@@ -167,7 +198,8 @@ public class GameState {
         plot.harvest();
         actionsRemaining--;
 
-        return new int[] { finalPrice, quality, basePrice, expGained };
+        // Return: quality, basePrice, expGained (no immediate sale)
+        return new int[] { quality, basePrice, expGained };
     }
     
     public Crop buySeedBox(int boxType) {
@@ -270,8 +302,42 @@ public class GameState {
 
         daysRemaining--;
         actionsRemaining = DAILY_ACTIONS;
+
+        // Check if market prices need updating
+        checkAndUpdateMarketPrices();
+
+        // Process storage decay
+        processStorageDecay();
+
+        // Process random pest invasion
+        processPestInvasion();
     }
-    
+
+    /**
+     * Process storage items - increment days and apply decay if needed.
+     */
+    private void processStorageDecay() {
+        for (StorageItem item : storage) {
+            item.incrementDay();
+            if (item.shouldDecay()) {
+                item.applyDecay();
+            }
+        }
+    }
+
+    /**
+     * Get items that are about to decay (within 2 days).
+     */
+    public java.util.List<StorageItem> getItemsAboutToDecay() {
+        java.util.List<StorageItem> decaying = new java.util.ArrayList<>();
+        for (StorageItem item : storage) {
+            if (item.isAboutToDecay()) {
+                decaying.add(item);
+            }
+        }
+        return decaying;
+    }
+
     public void endGame() {
         if (coins > 0) {
             highscores.add(new Highscore(playerName, coins));
@@ -496,6 +562,92 @@ public class GameState {
         return new int[] { 10, 25, 1, 2 };
     }
 
+    // ==================== PEST INVASION SYSTEM ====================
+
+    public static final int PEST_CHANCE_NORMAL = 15;      // 15% chance for normal crops
+    public static final int PEST_CHANCE_FERTILIZED = 5;   // 5% chance for fertilized crops
+    public static final int PEST_MIN_DAMAGE = 1;          // Minimum quality damage
+    public static final int PEST_MAX_DAMAGE = 10;         // Maximum quality damage
+
+    private java.util.List<int[]> lastPestInvasions = new java.util.ArrayList<>();  // [plotNumber, damage]
+
+    /**
+     * Process pest invasions - randomly infest one planted crop.
+     */
+    private void processPestInvasion() {
+        lastPestInvasions.clear();
+
+        // Clear previous pest status from all plots
+        for (Plot plot : plots) {
+            plot.clearPestStatus();
+        }
+
+        // Get all planted crops that are not yet ready to harvest
+        java.util.List<Integer> eligiblePlots = new java.util.ArrayList<>();
+        for (int i = 0; i < plots.size(); i++) {
+            Plot plot = plots.get(i);
+            if (!plot.isEmpty() && !plot.isReadyToHarvest()) {
+                eligiblePlots.add(i);
+            }
+        }
+
+        if (eligiblePlots.isEmpty()) return;
+
+        // Randomly select one plot to potentially infest
+        int selectedIndex = eligiblePlots.get(randomizer.nextInt(eligiblePlots.size()));
+        Plot selectedPlot = plots.get(selectedIndex);
+
+        // Determine chance based on fertilization
+        int pestChance = selectedPlot.isFertilized() ? PEST_CHANCE_FERTILIZED : PEST_CHANCE_NORMAL;
+
+        // Roll for pest invasion
+        if (randomizer.nextInt(100) < pestChance) {
+            // Apply random damage between 1-10%
+            int damage = PEST_MIN_DAMAGE + randomizer.nextInt(PEST_MAX_DAMAGE - PEST_MIN_DAMAGE + 1);
+            selectedPlot.applyPestDamage(damage);
+            lastPestInvasions.add(new int[] { selectedPlot.getNumber(), damage });
+        }
+    }
+
+    /**
+     * Get list of pest invasions from last skip day.
+     * Returns list of [plotNumber, damage] arrays.
+     */
+    public java.util.List<int[]> getLastPestInvasions() {
+        return lastPestInvasions;
+    }
+
+    /**
+     * Check if there were any pest invasions.
+     */
+    public boolean hadPestInvasion() {
+        return !lastPestInvasions.isEmpty();
+    }
+
+    /**
+     * Get the infested plot info for display.
+     */
+    public String getPestInvasionInfo() {
+        if (lastPestInvasions.isEmpty()) return "";
+
+        StringBuilder sb = new StringBuilder();
+        for (int[] invasion : lastPestInvasions) {
+            int plotNum = invasion[0];
+            int damage = invasion[1];
+            Plot plot = plots.get(plotNum - 1);  // Plot numbers are 1-based
+            sb.append("Plot ").append(plotNum).append(" (").append(plot.getCropName())
+              .append("): -").append(damage).append("% quality");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Clear pest invasion notifications after displaying.
+     */
+    public void clearPestInvasions() {
+        lastPestInvasions.clear();
+    }
+
     // ==================== CHEAT CODES (for presentation) ====================
 
     public void addCoins(int amount) {
@@ -505,5 +657,254 @@ public class GameState {
     public void addLevel() {
         playerLevel++;
         currentExp = 0;
+    }
+
+    // ==================== MARKET PRICE SYSTEM ====================
+
+    /**
+     * Initialize market prices for all crops in the database.
+     * Called at game start and whenever prices need regeneration.
+     */
+    private void initializeMarketPrices() {
+        String currentSeason = getCurrentSeason();
+
+        for (Crop crop : cropDatabase) {
+            double multiplier = randomizer.generatePriceMultiplier();
+            MarketPrice marketPrice = new MarketPrice(
+                crop.getName(),
+                crop.getRarity(),
+                multiplier
+            );
+
+            // Add seasonal bonus if crop is in season
+            if (crop.getSeason().equals(currentSeason)) {
+                marketPrice.setSeasonalBonus(randomizer.generateSeasonalBonus());
+            }
+
+            marketPrices.put(crop.getName(), marketPrice);
+        }
+    }
+
+    /**
+     * Regenerate all market prices. Called every 3 days.
+     */
+    public void regenerateMarketPrices() {
+        initializeMarketPrices();
+        lastPriceUpdateDay = daysRemaining;
+    }
+
+    /**
+     * Check if market prices should be updated and update if needed.
+     * Called during skipDay().
+     */
+    private void checkAndUpdateMarketPrices() {
+        // Calculate days since last update
+        int daysSinceUpdate = lastPriceUpdateDay - daysRemaining;
+
+        // Regenerate if 3 or more days have passed
+        if (daysSinceUpdate >= PRICE_UPDATE_INTERVAL) {
+            regenerateMarketPrices();
+        }
+    }
+
+    /**
+     * Get market price multiplier for a specific crop.
+     * @param cropName The name of the crop
+     * @return The total multiplier (daily + seasonal)
+     */
+    public double getMarketMultiplier(String cropName) {
+        MarketPrice price = marketPrices.get(cropName);
+        if (price != null) {
+            return price.getTotalMultiplier();
+        }
+        return 1.0; // Default to no change if not found
+    }
+
+    /**
+     * Get the MarketPrice object for a specific crop.
+     * @param cropName The name of the crop
+     * @return MarketPrice object or null if not found
+     */
+    public MarketPrice getMarketPrice(String cropName) {
+        return marketPrices.get(cropName);
+    }
+
+    /**
+     * Get all market prices.
+     * @return Map of crop names to MarketPrice objects
+     */
+    public Map<String, MarketPrice> getAllMarketPrices() {
+        return marketPrices;
+    }
+
+    /**
+     * Get the top N crops with the best price multipliers.
+     * @param count Number of crops to return
+     * @return List of MarketPrice objects sorted by multiplier descending
+     */
+    public List<MarketPrice> getTopPriceCrops(int count) {
+        return marketPrices.values().stream()
+            .sorted(Comparator.comparingDouble(MarketPrice::getTotalMultiplier).reversed())
+            .limit(count)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Get the bottom N crops with the worst price multipliers.
+     * @param count Number of crops to return
+     * @return List of MarketPrice objects sorted by multiplier ascending
+     */
+    public List<MarketPrice> getBottomPriceCrops(int count) {
+        return marketPrices.values().stream()
+            .sorted(Comparator.comparingDouble(MarketPrice::getTotalMultiplier))
+            .limit(count)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * Get days until next price update.
+     * @return Number of days until prices change
+     */
+    public int getDaysUntilPriceUpdate() {
+        int daysSinceUpdate = lastPriceUpdateDay - daysRemaining;
+        int daysUntil = PRICE_UPDATE_INTERVAL - daysSinceUpdate;
+        return Math.max(1, daysUntil); // At minimum 1 day
+    }
+
+    // ==================== STORAGE SYSTEM ====================
+
+    /**
+     * Get the storage list.
+     */
+    public List<StorageItem> getStorage() {
+        return storage;
+    }
+
+    /**
+     * Get current storage capacity based on upgrade level.
+     */
+    public int getStorageCapacity() {
+        return BASE_STORAGE_CAPACITY + (storageUpgradeLevel * STORAGE_UPGRADE_SLOTS);
+    }
+
+    /**
+     * Get number of unique crop types in storage (not total quantity).
+     */
+    public int getStorageSlotCount() {
+        return storage.size();
+    }
+
+    /**
+     * Check if storage is full (at capacity for unique crop types).
+     */
+    public boolean isStorageFull() {
+        return storage.size() >= getStorageCapacity();
+    }
+
+    /**
+     * Store a harvested crop. Stacks with existing crops of the same name.
+     */
+    public void storeHarvest(String cropName, String cropRarity, int quality, int basePrice) {
+        // Check if this crop already exists in storage
+        for (StorageItem item : storage) {
+            if (item.getCropName().equals(cropName)) {
+                // Add to existing stack
+                item.addToStack(quality);
+                return;
+            }
+        }
+
+        // New crop type - add new entry if there's space
+        if (!isStorageFull()) {
+            storage.add(new StorageItem(cropName, cropRarity, quality, basePrice));
+        }
+    }
+
+    /**
+     * Sell a specific item from storage.
+     * @param index Index of the item to sell
+     * @return Array with [totalCoins, quantity, averageQuality] or null if invalid
+     */
+    public int[] sellFromStorage(int index) {
+        if (index < 0 || index >= storage.size()) return null;
+
+        StorageItem item = storage.get(index);
+        double marketMultiplier = getMarketMultiplier(item.getCropName());
+        int totalValue = item.getCurrentValue(marketMultiplier);
+        int quantity = item.getQuantity();
+        int avgQuality = item.getAverageQuality();
+
+        coins += totalValue;
+        storage.remove(index);
+
+        return new int[] { totalValue, quantity, avgQuality };
+    }
+
+    /**
+     * Sell all items from storage.
+     * @return Total coins earned
+     */
+    public int sellAllFromStorage() {
+        int totalEarned = 0;
+
+        for (StorageItem item : storage) {
+            double marketMultiplier = getMarketMultiplier(item.getCropName());
+            totalEarned += item.getCurrentValue(marketMultiplier);
+        }
+
+        coins += totalEarned;
+        storage.clear();
+
+        return totalEarned;
+    }
+
+    /**
+     * Calculate total value of all stored items at current market prices.
+     */
+    public int getStorageTotalValue() {
+        int total = 0;
+        for (StorageItem item : storage) {
+            double marketMultiplier = getMarketMultiplier(item.getCropName());
+            total += item.getCurrentValue(marketMultiplier);
+        }
+        return total;
+    }
+
+    // ==================== STORAGE UPGRADE SYSTEM ====================
+
+    public int getStorageUpgradeLevel() {
+        return storageUpgradeLevel;
+    }
+
+    public boolean isStorageMaxLevel() {
+        return storageUpgradeLevel >= MAX_STORAGE_UPGRADES;
+    }
+
+    public int getStorageUpgradeCost() {
+        // Tier 1: 500 coins, Tier 2: 800 coins
+        if (storageUpgradeLevel == 0) return 500;
+        if (storageUpgradeLevel == 1) return 800;
+        return -1; // Max level
+    }
+
+    public int getStorageUpgradeRequiredLevel() {
+        // Tier 1: Level 10, Tier 2: Level 15
+        if (storageUpgradeLevel == 0) return 10;
+        if (storageUpgradeLevel == 1) return 15;
+        return -1; // Max level
+    }
+
+    public boolean canUpgradeStorage() {
+        int cost = getStorageUpgradeCost();
+        int reqLevel = getStorageUpgradeRequiredLevel();
+        if (cost == -1) return false; // Max level
+        return coins >= cost && playerLevel >= reqLevel;
+    }
+
+    public boolean purchaseStorageUpgrade() {
+        if (!canUpgradeStorage()) return false;
+        coins -= getStorageUpgradeCost();
+        storageUpgradeLevel++;
+        return true;
     }
 }

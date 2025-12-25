@@ -1511,3 +1511,268 @@
                 dropshadow(gaussian, rgba(171,71,188,0.5), 14, 0.5, 0, 0),
                 innershadow(gaussian, rgba(142,36,170,0.25), 10, 0.5, 0, 0);
 }
+
+/* ==================== MARKET TRENDS PANEL ==================== */
+
+.market-panel {
+    -fx-background-color: rgba(0, 0, 0, 0.75);
+    -fx-background-radius: 12;
+    -fx-border-color: rgba(255, 217, 102, 0.6);
+    -fx-border-width: 2;
+    -fx-border-radius: 12;
+    -fx-min-width: 420;
+    -fx-max-width: 520;
+}
+
+.market-title {
+    -fx-font-family: "Georgia", serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFD966;
+}
+
+.market-update {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #A0A0A0;
+    -fx-font-style: italic;
+}
+
+.market-subtitle-good {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4CAF50;
+}
+
+.market-subtitle-bad {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #E57373;
+}
+
+.market-list {
+    -fx-min-width: 150;
+}
+
+.market-item-good {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #81C784;
+}
+
+.market-item-bad {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #EF9A9A;
+}
+
+/* ==================== STORAGE PANEL ==================== */
+
+.storage-panel {
+    -fx-background-color: rgba(0, 0, 0, 0.85);
+    -fx-background-radius: 15;
+    -fx-border-color: #e67e22;
+    -fx-border-width: 3;
+    -fx-border-radius: 15;
+    -fx-min-width: 360;
+    -fx-max-width: 380;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 12, 0.4, 0, 4);
+}
+
+.storage-title {
+    -fx-font-family: "Georgia", serif;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e67e22;
+}
+
+.storage-capacity {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6BCB77;
+}
+
+.storage-table {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 10;
+    -fx-border-color: rgba(230, 126, 34, 0.5);
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+}
+
+.storage-table .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #e67e22, #d35400);
+    -fx-background-radius: 8 8 0 0;
+}
+
+.storage-table .column-header {
+    -fx-background-color: transparent;
+}
+
+.storage-table .column-header .label {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-padding: 8 6 8 6;
+}
+
+.storage-table .table-row-cell {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-border-color: transparent transparent rgba(230, 126, 34, 0.2) transparent;
+}
+
+.storage-table .table-row-cell:odd {
+    -fx-background-color: rgba(255, 255, 255, 0.12);
+}
+
+.storage-table .table-row-cell:selected {
+    -fx-background-color: rgba(230, 126, 34, 0.4);
+}
+
+.storage-table .table-row-cell:hover {
+    -fx-background-color: rgba(230, 126, 34, 0.25);
+}
+
+.storage-table .table-cell {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #EEEEEE;
+    -fx-padding: 6 8 6 8;
+}
+
+.storage-empty {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #888888;
+    -fx-font-style: italic;
+}
+
+.storage-btn-sell {
+    -fx-background-color: linear-gradient(to bottom, #4CAF50, #388E3C);
+    -fx-background-radius: 10;
+    -fx-border-color: #2E7D32;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.storage-btn-sell:hover {
+    -fx-background-color: linear-gradient(to bottom, #66BB6A, #4CAF50);
+    -fx-effect: dropshadow(gaussian, rgba(76,175,80,0.5), 10, 0.5, 0, 0);
+}
+
+.storage-btn-sell:pressed {
+    -fx-background-color: linear-gradient(to bottom, #388E3C, #2E7D32);
+}
+
+.storage-btn-sell-all {
+    -fx-background-color: linear-gradient(to bottom, #FF9800, #F57C00);
+    -fx-background-radius: 10;
+    -fx-border-color: #E65100;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.storage-btn-sell-all:hover {
+    -fx-background-color: linear-gradient(to bottom, #FFB74D, #FF9800);
+    -fx-effect: dropshadow(gaussian, rgba(255,152,0,0.5), 10, 0.5, 0, 0);
+}
+
+.storage-btn-sell-all:pressed {
+    -fx-background-color: linear-gradient(to bottom, #F57C00, #E65100);
+}
+
+.storage-total {
+    -fx-font-family: "Georgia", serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFD966;
+}
+
+/* Storage upgrade card color */
+.upgrade-card-storage {
+    -fx-border-color: #e67e22;
+}
+
+.upgrade-card-storage .upgrade-title {
+    -fx-text-fill: #e67e22;
+}
+
+.upgrade-card-storage .upgrade-effect {
+    -fx-text-fill: #e67e22;
+}
+
+/* ==================== STORAGE DECAY WARNING ==================== */
+
+.storage-warning-box {
+    -fx-background-color: rgba(231, 76, 60, 0.25);
+    -fx-background-radius: 8;
+    -fx-border-color: #e74c3c;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-padding: 8 12 8 12;
+}
+
+.storage-warning-title {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FF6B6B;
+}
+
+.storage-warning-text {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 11px;
+    -fx-text-fill: #FFAAAA;
+    -fx-text-alignment: center;
+}
+
+/* ==================== PEST INVASION POPUP ==================== */
+
+.popup-box-pest {
+    -fx-background-color: linear-gradient(to bottom, #FFF3E0, #FFE0B2);
+    -fx-background-radius: 20;
+    -fx-border-color: #E65100;
+    -fx-border-width: 4;
+    -fx-border-radius: 20;
+    -fx-min-width: 420;
+    -fx-effect: dropshadow(gaussian, rgba(230,81,0,0.5), 25, 0.4, 0, 8);
+}
+
+.pest-popup-title {
+    -fx-font-family: "Georgia", serif;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #BF360C;
+}
+
+.pest-popup-icon {
+    -fx-font-size: 48px;
+}
+
+.pest-popup-text {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 16px;
+    -fx-text-fill: #5D4037;
+    -fx-text-alignment: center;
+}
+
+.pest-popup-hint {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #8D6E63;
+    -fx-font-style: italic;
+}

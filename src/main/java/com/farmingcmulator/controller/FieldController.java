@@ -3,21 +3,28 @@ package com.farmingcmulator.controller;
 import com.farmingcmulator.GameState;
 import com.farmingcmulator.SceneManager;
 import com.farmingcmulator.model.Inventory;
+import com.farmingcmulator.model.MarketPrice;
 import com.farmingcmulator.model.Plot;
 import com.farmingcmulator.model.Rarity;
 import com.farmingcmulator.util.Randomizer;
 import com.farmingcmulator.util.SoundManager;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
+import com.farmingcmulator.model.StorageItem;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -62,8 +69,10 @@ public class FieldController implements Initializable {
     @FXML private VBox inventoryPopup;
     @FXML private VBox harvestResultPopup;
     @FXML private VBox infoPopup;
+    @FXML private VBox pestPopup;
     @FXML private ListView<String> inventoryListView;
     @FXML private Label infoPopupLabel;
+    @FXML private Label pestPopupLabel;
 
     @FXML private Label harvestCropLabel;
     @FXML private Label harvestQualityLabel;
@@ -73,6 +82,25 @@ public class FieldController implements Initializable {
     @FXML private Label harvestBonusLabel;
     @FXML private Label harvestTotalLabel;
     @FXML private ProgressBar harvestQualityBar;
+
+    // Market trends
+    @FXML private Label priceUpdateLabel;
+    @FXML private Label goodPrice1, goodPrice2, goodPrice3;
+    @FXML private Label badPrice1, badPrice2, badPrice3;
+
+    // Storage panel
+    @FXML private VBox storagePanel;
+    @FXML private TableView<StorageItem> storageTable;
+    @FXML private TableColumn<StorageItem, String> storageCropColumn;
+    @FXML private TableColumn<StorageItem, String> storageQtyColumn;
+    @FXML private TableColumn<StorageItem, String> storageQualityColumn;
+    @FXML private TableColumn<StorageItem, String> storagePriceColumn;
+    @FXML private Label storageCapacityLabel;
+    @FXML private Label storageTotalLabel;
+    @FXML private Button sellButton;
+    @FXML private Button sellAllButton;
+    @FXML private VBox decayWarningBox;
+    @FXML private Label decayWarningLabel;
 
     private GameState gameState;
     private SoundManager sound = SoundManager.getInstance();
@@ -120,8 +148,136 @@ public class FieldController implements Initializable {
         }
 
         hideAllPopups();
+        initializeStorageTable();
         updateDisplay();
+        updateStorageDisplay();
         resetAllActionButtons();
+
+        // Check for pest invasion notification
+        checkPestInvasionNotification();
+    }
+
+    /**
+     * Check if there was a pest invasion and show notification.
+     */
+    private void checkPestInvasionNotification() {
+        if (gameState.hadPestInvasion()) {
+            showPestInvasionPopup();
+        }
+    }
+
+    /**
+     * Show pest invasion popup with damage info.
+     */
+    private void showPestInvasionPopup() {
+        if (pestPopup != null && pestPopupLabel != null) {
+            String info = gameState.getPestInvasionInfo();
+            pestPopupLabel.setText(info);
+            sound.playError();
+            setPopupVisible(pestPopup, true);
+        }
+    }
+
+    /**
+     * Initialize the storage table columns.
+     */
+    private void initializeStorageTable() {
+        if (storageTable == null) return;
+
+        // Crop name column
+        storageCropColumn.setCellValueFactory(cellData -> {
+            StorageItem item = cellData.getValue();
+            return new SimpleStringProperty(item.getCropName());
+        });
+
+        // Quantity column
+        storageQtyColumn.setCellValueFactory(cellData -> {
+            StorageItem item = cellData.getValue();
+            return new SimpleStringProperty(String.valueOf(item.getQuantity()));
+        });
+
+        // Quality column
+        storageQualityColumn.setCellValueFactory(cellData -> {
+            StorageItem item = cellData.getValue();
+            return new SimpleStringProperty(item.getDisplayQuality());
+        });
+
+        // Price column (current value based on market)
+        storagePriceColumn.setCellValueFactory(cellData -> {
+            StorageItem item = cellData.getValue();
+            double multiplier = gameState.getMarketMultiplier(item.getCropName());
+            int value = item.getCurrentValue(multiplier);
+            return new SimpleStringProperty(value + " coins");
+        });
+    }
+
+    /**
+     * Update the storage display with current items.
+     */
+    private void updateStorageDisplay() {
+        if (storageTable == null) return;
+
+        // Update table data
+        List<StorageItem> storage = gameState.getStorage();
+        storageTable.setItems(FXCollections.observableArrayList(storage));
+
+        // Update capacity label
+        if (storageCapacityLabel != null) {
+            int current = gameState.getStorageSlotCount();
+            int capacity = gameState.getStorageCapacity();
+            storageCapacityLabel.setText(current + "/" + capacity);
+
+            // Change color if near full
+            if (current >= capacity) {
+                storageCapacityLabel.setStyle("-fx-text-fill: #FF6B6B;");
+            } else if (current >= capacity - 2) {
+                storageCapacityLabel.setStyle("-fx-text-fill: #FFD93D;");
+            } else {
+                storageCapacityLabel.setStyle("-fx-text-fill: #6BCB77;");
+            }
+        }
+
+        // Update total value label
+        if (storageTotalLabel != null) {
+            int totalValue = gameState.getStorageTotalValue();
+            storageTotalLabel.setText("Total Value: " + totalValue + " coins");
+        }
+
+        // Update decay warning
+        updateDecayWarning();
+
+        // Refresh table to update prices
+        storageTable.refresh();
+    }
+
+    /**
+     * Update the decay warning display based on items about to decay.
+     */
+    private void updateDecayWarning() {
+        if (decayWarningBox == null || decayWarningLabel == null) return;
+
+        List<StorageItem> decayingItems = gameState.getItemsAboutToDecay();
+
+        if (decayingItems.isEmpty()) {
+            decayWarningBox.setVisible(false);
+            decayWarningBox.setManaged(false);
+        } else {
+            StringBuilder warning = new StringBuilder();
+            for (int i = 0; i < decayingItems.size(); i++) {
+                StorageItem item = decayingItems.get(i);
+                int daysLeft = item.getDaysUntilDecay();
+                warning.append(item.getCropName())
+                       .append(" (-10% in ")
+                       .append(daysLeft)
+                       .append(daysLeft == 1 ? " day)" : " days)");
+                if (i < decayingItems.size() - 1) {
+                    warning.append(", ");
+                }
+            }
+            decayWarningLabel.setText(warning.toString());
+            decayWarningBox.setVisible(true);
+            decayWarningBox.setManaged(true);
+        }
     }
 
     private void updateDisplay() {
@@ -129,6 +285,7 @@ public class FieldController implements Initializable {
         seasonLabel.setText(gameState.getCurrentSeason());
         updateSeasonLabelColor();
         updateSeasonBackground();
+        updateMarketTrends();
 
         List<Plot> plots = gameState.getPlots();
         for (int i = 0; i < GameState.NUM_PLOTS; i++) {
@@ -158,6 +315,45 @@ public class FieldController implements Initializable {
             }
         } catch (Exception e) {
             // Keep current background if image not found
+        }
+    }
+
+    /**
+     * Update the market trends display with current prices.
+     */
+    private void updateMarketTrends() {
+        // Update countdown to next price change
+        int daysUntil = gameState.getDaysUntilPriceUpdate();
+        if (priceUpdateLabel != null) {
+            priceUpdateLabel.setText("Updates in: " + daysUntil + " day" + (daysUntil != 1 ? "s" : ""));
+        }
+
+        // Get top 3 and bottom 3 prices
+        List<MarketPrice> topPrices = gameState.getTopPriceCrops(3);
+        List<MarketPrice> bottomPrices = gameState.getBottomPriceCrops(3);
+
+        // Good prices labels array for iteration
+        Label[] goodLabels = { goodPrice1, goodPrice2, goodPrice3 };
+        Label[] badLabels = { badPrice1, badPrice2, badPrice3 };
+
+        // Populate good prices
+        for (int i = 0; i < goodLabels.length; i++) {
+            if (goodLabels[i] != null && i < topPrices.size()) {
+                MarketPrice mp = topPrices.get(i);
+                String text = mp.getCropName() + " " + mp.getMultiplierDisplay();
+                goodLabels[i].setText(text);
+                goodLabels[i].setStyle("-fx-text-fill: " + Rarity.getColor(mp.getCropRarity()) + ";");
+            }
+        }
+
+        // Populate bad prices
+        for (int i = 0; i < badLabels.length; i++) {
+            if (badLabels[i] != null && i < bottomPrices.size()) {
+                MarketPrice mp = bottomPrices.get(i);
+                String text = mp.getCropName() + " " + mp.getMultiplierDisplay();
+                badLabels[i].setText(text);
+                badLabels[i].setStyle("-fx-text-fill: " + Rarity.getColor(mp.getCropRarity()) + ";");
+            }
         }
     }
 
@@ -240,6 +436,7 @@ public class FieldController implements Initializable {
         setPopupVisible(inventoryPopup, false);
         setPopupVisible(harvestResultPopup, false);
         setPopupVisible(infoPopup, false);
+        setPopupVisible(pestPopup, false);
     }
 
     private void setPopupVisible(VBox popup, boolean visible) {
@@ -385,12 +582,18 @@ public class FieldController implements Initializable {
                     showInfoPopup("No actions remaining!");
                     return;
                 }
+                if (gameState.isStorageFull()) {
+                    showInfoPopup("Storage is full! Sell some crops first.");
+                    return;
+                }
                 String cropName = plot.getCropName();
                 String cropRarity = plot.getCropRarity();
                 int[] result = gameState.harvestCrop(plotIndex);
                 if (result != null) {
                     sound.playHarvest();
-                    showHarvestResult(cropName, cropRarity, result[2], result[0], result[1], result[3]);
+                    // result: [quality, basePrice, expGained]
+                    showHarvestResult(cropName, cropRarity, result[0], result[1], result[2]);
+                    updateStorageDisplay();
                 }
                 break;
         }
@@ -478,6 +681,13 @@ public class FieldController implements Initializable {
         setPopupVisible(infoPopup, false);
     }
 
+    @FXML
+    private void onPestPopupClose() {
+        sound.playClick();
+        setPopupVisible(pestPopup, false);
+        gameState.clearPestInvasions();  // Clear after displaying
+    }
+
     private void showInventoryPopup() {
         sound.playPopup();
         String currentSeason = gameState.getCurrentSeason();
@@ -520,7 +730,7 @@ public class FieldController implements Initializable {
         selectedPlotIndex = -1;
     }
 
-    private void showHarvestResult(String cropName, String rarity, int basePrice, int finalPrice, int quality, int expGained) {
+    private void showHarvestResult(String cropName, String rarity, int quality, int basePrice, int expGained) {
         harvestCropLabel.setText(cropName + " (" + rarity + ")");
         harvestCropLabel.setStyle("-fx-text-fill: " + Rarity.getColor(rarity) + ";");
 
@@ -532,14 +742,19 @@ public class FieldController implements Initializable {
 
         harvestMessageLabel.setText("\"" + Randomizer.getQualityMessage(quality) + "\"");
 
-        harvestBaseLabel.setText(basePrice + " coins");
-        harvestBonusLabel.setText("+" + (finalPrice - basePrice) + " coins (+" + quality + "%)");
-        harvestTotalLabel.setText(finalPrice + " coins | +" + expGained + " EXP");
+        // Show stored info instead of immediate sale
+        double marketMultiplier = gameState.getMarketMultiplier(cropName);
+        int adjustedBase = (int) Math.round(basePrice * marketMultiplier);
+        int qualityBonus = (int) Math.round(adjustedBase * quality / 100.0);
+        int potentialValue = adjustedBase + qualityBonus;
+
+        harvestBaseLabel.setText(adjustedBase + " coins (market)");
+        harvestBonusLabel.setText("+" + qualityBonus + " coins (+" + quality + "%)");
+        harvestTotalLabel.setText(potentialValue + " coins");
 
         harvestQualityBar.setProgress(quality / 100.0);
 
         sound.playSuccess();
-        sound.playCoins();
         setPopupVisible(harvestResultPopup, true);
     }
 
@@ -554,5 +769,46 @@ public class FieldController implements Initializable {
     private void onBackClicked() {
         sound.playClick();
         SceneManager.getInstance().switchScene("GameMenu");
+    }
+
+    // ==================== STORAGE SELL ACTIONS ====================
+
+    @FXML
+    private void onSellClicked() {
+        sound.playClick();
+
+        if (storageTable == null) return;
+
+        StorageItem selected = storageTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showInfoPopup("Select a crop to sell!");
+            return;
+        }
+
+        int index = storageTable.getSelectionModel().getSelectedIndex();
+        int[] result = gameState.sellFromStorage(index);
+
+        if (result != null) {
+            sound.playCoins();
+            showInfoPopup("Sold " + selected.getCropName() + " x" + result[1] + " for " + result[0] + " coins!");
+            updateStorageDisplay();
+            updateDisplay();
+        }
+    }
+
+    @FXML
+    private void onSellAllClicked() {
+        sound.playClick();
+
+        if (gameState.getStorage().isEmpty()) {
+            showInfoPopup("Storage is empty!");
+            return;
+        }
+
+        int totalEarned = gameState.sellAllFromStorage();
+        sound.playCoins();
+        showInfoPopup("Sold all crops for " + totalEarned + " coins!");
+        updateStorageDisplay();
+        updateDisplay();
     }
 }
